@@ -25,4 +25,10 @@ public class loginController {
     public String logout(@RequestParam String username) {
         return "User " + username + " has been logged out.";
     }
+
+    @PostMapping
+    public String isLoggedIn(@RequestParam String username)
+    {
+        return "User " + username + " is logged in";
+    }
 }
