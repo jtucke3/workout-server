@@ -19,4 +19,10 @@ public class loginController {
         // For now, just echo the data back
         return "Received login request for user: " + username;
     }
+
+    // POST endpoint for logout
+    @PostMapping
+    public String logout(@RequestParam String username) {
+        return "User " + username + " has been logged out.";
+    }
 }
