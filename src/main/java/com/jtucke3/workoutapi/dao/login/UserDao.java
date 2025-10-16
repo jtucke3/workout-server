@@ -1,10 +1,12 @@
 package com.jtucke3.workoutapi.dao.login;
 
+import com.jtucke3.workoutapi.dto.user.EditProfileRequest;
 import com.jtucke3.workoutapi.converter.user.UserConv;
 import com.jtucke3.workoutapi.domain.entity.UserEntity;
 import com.jtucke3.workoutapi.dto.user.UserDTO;
 import jakarta.persistence.*;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.*;
 
@@ -39,5 +41,19 @@ public class UserDao implements IUserDao {
         cq.select(root).where(cb.equal(cb.lower(root.get("email")), email.toLowerCase()));
         var list = em.createQuery(cq).setMaxResults(1).getResultList();
         return list.isEmpty() ? Optional.empty() : Optional.of(list.get(0));
+    }
+    
+    public Optional<UserDTO> editProfile(EditProfileRequest request) {
+        UserEntity user = em.find(UserEntity.class, request.getUserId());
+        if (user == null) return Optional.empty();
+
+        if (request.getDisplayName() != null && !request.getDisplayName().isBlank()) {
+            user.setDisplayName(request.getDisplayName());
+        }
+        if (request.getEmail() != null && !request.getEmail().isBlank()) {
+            user.setEmail(request.getEmail());
+        }
+        em.merge(user);
+        return Optional.of(conv.toDto(user));
     }
 }
