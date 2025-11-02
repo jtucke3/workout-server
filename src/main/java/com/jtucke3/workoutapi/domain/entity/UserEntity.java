@@ -5,6 +5,8 @@ import lombok.*;
 import java.time.Instant;
 import java.util.UUID;
 
+import com.jtucke3.workoutapi.domain.enums.WeightUnit;
+
 @Entity @Table(name = "users")
 @Getter @Setter @NoArgsConstructor
 public class UserEntity {
@@ -22,4 +24,8 @@ public class UserEntity {
 
     @Column(nullable = false)
     private Instant createdAt = Instant.now();
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private WeightUnit preferredUnit = WeightUnit.POUNDS; // default    
 }
