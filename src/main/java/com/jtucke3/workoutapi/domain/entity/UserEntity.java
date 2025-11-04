@@ -2,13 +2,20 @@ package com.jtucke3.workoutapi.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.UuidGenerator;
+import org.hibernate.type.SqlTypes;
+
 import java.time.Instant;
 import java.util.UUID;
 
 @Entity @Table(name = "users")
 @Getter @Setter @NoArgsConstructor
 public class UserEntity {
-    @Id @GeneratedValue(strategy = GenerationType.UUID)
+
+    @Id
+    @UuidGenerator
+    @JdbcTypeCode(SqlTypes.CHAR)              // <-- store UUID as 36-char string
     @Column(columnDefinition = "char(36)")
     private UUID id;
 
@@ -22,4 +29,10 @@ public class UserEntity {
 
     @Column(nullable = false)
     private Instant createdAt = Instant.now();
+
+    @Column(name = "two_factor_enabled", nullable = false)
+    private boolean twoFactorEnabled = false;
+
+    @Column(name = "two_factor_secret")
+    private String twoFactorSecret;
 }
