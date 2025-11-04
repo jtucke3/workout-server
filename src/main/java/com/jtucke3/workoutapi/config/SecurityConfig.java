@@ -18,7 +18,10 @@ public class SecurityConfig {
 
                 // let anonymous requests through to all auth endpoints
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/auth/**",
+                                         "/api/auth/**",
+                                         "/api/workouts/**",
+                                         "/api/exercises/**").permitAll()
                         .anyRequest().authenticated()
                 )
 

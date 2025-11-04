@@ -7,15 +7,11 @@ import org.hibernate.annotations.UuidGenerator;
 import org.hibernate.type.SqlTypes;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Entity @Table(name = "workouts")
+@Entity @Table(name = "workout_exercises")
 @Getter @Setter @NoArgsConstructor
-public class WorkoutEntity {
-
-    public enum Status { IN_PROGRESS, COMPLETED, CANCELLED }
-
+public class WorkoutExerciseEntity {
     @Id
     @UuidGenerator
     @JdbcTypeCode(SqlTypes.CHAR)
@@ -23,21 +19,22 @@ public class WorkoutEntity {
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_id", nullable = false)
-    private UserEntity user;
+    @JoinColumn(name = "workout_id", nullable = false)
+    private WorkoutEntity workout;
+
+    // Optional link to preset (if chosen from catalog)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "catalog_id")
+    private ExerciseCatalogEntity catalog;
 
     @Column(nullable = false)
-    private String title;
+    private String name;
 
     @Column(columnDefinition = "text")
     private String notes;
 
     @Column(nullable = false)
-    private LocalDateTime workoutAt;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Status status = Status.IN_PROGRESS;
+    private Integer position;
 
     @Column(nullable = false)
     private Instant createdAt = Instant.now();
