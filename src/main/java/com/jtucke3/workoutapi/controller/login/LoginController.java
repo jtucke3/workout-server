@@ -7,8 +7,7 @@ import com.jtucke3.workoutapi.dto.login.RegisterRequestDTO;
 import com.jtucke3.workoutapi.dto.login.Verify2FARequestDTO;
 import com.jtucke3.workoutapi.dto.user.UserDTO;
 import com.jtucke3.workoutapi.service.login.external.IAuthExternalService;
-import com.jtucke3.workoutapi.webVo.login.LoginWebRequestWebVo;
-import com.jtucke3.workoutapi.webVo.login.LoginWebResponseWebVo;
+import com.jtucke3.workoutapi.webVo.login.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,18 +27,20 @@ public class LoginController {
     }
 
     @PostMapping("/2fa/verify")
-    public LoginResponseDTO verify(@RequestBody Verify2FARequestDTO req) {
+    public LoginResponseDTO verify(@RequestBody Verify2FAWebRequestWebVo webReq) {
+        Verify2FARequestDTO req = conv.toDto(webReq);
         return service.verify2fa(req);
     }
 
     @PostMapping("/register")
-    public UserDTO register(@RequestBody RegisterRequestDTO req) {
+    public UserDTO register(@RequestBody RegisterWebRequestWebVo webReq) {
+        RegisterRequestDTO req = conv.toDto(webReq);
         return service.register(req);
     }
 
-    @PostMapping("/2fa/enable")
-    public String enable2faForEmail(@RequestParam("email") String email) {
-        // returns an otpauth:// URI you can paste/QR into Google Authenticator
-        return service.enable2faForCurrentUser(email);
-    }
+    // testing endpoint
+    // @PostMapping("/2fa/enable")
+    // public Enable2FAResponseDTO enable(@RequestParam("email") String email) {
+    //     return service.enable2faForCurrentUserWithQr(email);
+    // }
 }
