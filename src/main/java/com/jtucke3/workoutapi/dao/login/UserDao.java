@@ -19,7 +19,7 @@ public class UserDao implements IUserDao {
     @Override
     public Optional<UserDTO> findPublicByEmail(String email) {
         return findEntityByEmail(email).map(conv::toDto);
-    }
+    }a
 
     @Override
     public Optional<String> findPasswordHashByEmail(String email) {
@@ -82,6 +82,24 @@ public class UserDao implements IUserDao {
         e.setTwoFactorSecret(secret);
         e.setTwoFactorEnabled(enabled);
         em.merge(e);
+    }
+
+    @Override
+    public Optional<UserEntity> findEntityById(UUID id) {
+        if (id == null) return Optional.empty();
+        return Optional.ofNullable(em.find(UserEntity.class, id));
+    }
+
+    @Override
+    public UserEntity saveEntity(UserEntity entity) {
+        if (entity == null) throw new IllegalArgumentException("entity cannot be null");
+        if (entity.getId() == null) {
+            em.persist(entity);
+            em.flush();
+            return entity;
+        } else {
+            return em.merge(entity);
+        }
     }
 
 }
