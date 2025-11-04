@@ -1,7 +1,7 @@
 package com.jtucke3.workoutapi.controller.user;
 
 import com.jtucke3.workoutapi.dto.user.ChangePasswordDTO;
-import com.jtucke3.workoutapi.service.user.internal.IUserInternalService;
+import com.jtucke3.workoutapi.service.internal.user.IUserInternalService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
