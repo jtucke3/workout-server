@@ -40,4 +40,48 @@ public class UserDao implements IUserDao {
         var list = em.createQuery(cq).setMaxResults(1).getResultList();
         return list.isEmpty() ? Optional.empty() : Optional.of(list.get(0));
     }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        var cb = em.getCriteriaBuilder();
+        var cq = cb.createQuery(Long.class);
+        var root = cq.from(UserEntity.class);
+        cq.select(cb.count(root))
+                .where(cb.equal(cb.lower(root.get("email")), email.toLowerCase()));
+        var cnt = em.createQuery(cq).getSingleResult();
+        return cnt != null && cnt > 0;
+    }
+
+    @Override
+    public UserDTO saveNew(String email, String displayName, String passwordHash) {
+        var e = new UserEntity();
+        e.setEmail(email.toLowerCase());
+        e.setDisplayName(displayName);
+        e.setPasswordHash(passwordHash);
+        em.persist(e);
+        em.flush();
+        return conv.toDto(e);
+    }
+
+    @Override
+    public Optional<String> findTwoFactorSecretByEmail(String email) {
+        var cb = em.getCriteriaBuilder();
+        var cq = cb.createQuery(String.class);
+        var root = cq.from(UserEntity.class);
+        cq.select(root.get("twoFactorSecret"))
+                .where(cb.equal(cb.lower(root.get("email")), email.toLowerCase()));
+        var list = em.createQuery(cq).setMaxResults(1).getResultList();
+        return list.isEmpty() ? Optional.empty() : Optional.ofNullable(list.get(0));
+    }
+
+    @Override
+    public void storeTwoFactorSecret(String email, String secret, boolean enabled) {
+        var opt = findEntityByEmail(email);
+        if (opt.isEmpty()) throw new IllegalArgumentException("User not found: " + email);
+        var e = opt.get();
+        e.setTwoFactorSecret(secret);
+        e.setTwoFactorEnabled(enabled);
+        em.merge(e);
+    }
+
 }

@@ -12,9 +12,13 @@ public class AuthConv {
     public LoginWebResponseWebVo toWeb(LoginResponseDTO dto) {
         var web = new LoginWebResponseWebVo();
         web.setToken(dto.token());
-        web.setUserId(dto.user().id());
-        web.setEmail(dto.user().email());
-        web.setDisplayName(dto.user().displayName());
+        if (dto.user() != null) {
+            web.setUserId(dto.user().id());
+            web.setEmail(dto.user().email());
+            web.setDisplayName(dto.user().displayName());
+        }
+        web.setRequires2FA(dto.requires2FA());
+        web.setChallengeId(dto.challengeId());
         return web;
     }
 }
