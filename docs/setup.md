@@ -31,6 +31,9 @@ docker run -d -p 3306:3306 \
   --name workout-db \
   mysql:8
 
+
+  docker run -d -p 3306:3306 --name workout-db -e MYSQL_ROOT_PASSWORD=secret -e MYSQL_DATABASE=workout -e MYSQL_USER=workout_user -e MYSQL_PASSWORD=workout_pass mysql:8
+
 ## Step 2: Run SpringBoot
 
 Once the database is running, start the Spring Boot app using the Maven wrapper in a separate terminal:
