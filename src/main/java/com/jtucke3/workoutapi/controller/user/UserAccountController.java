@@ -29,4 +29,17 @@ public class UserAccountController {
         response.setMessage("Password changed successfully");
         return response;
     }
+
+    @PutMapping("/update-profile")
+    public BaseWebResponseVo updateProfile(@RequestHeader("X-User-Id") UUID userId,
+                                        @RequestBody UserProfileWebRequestVo webVo) {
+        UserProfileWVO wvo = UserConv.userProfileWebRequestToWVO(userId, webVo);
+        UserDTO updated = service.updateProfile(userId, wvo);
+
+        BaseWebResponseVo response = new BaseWebResponseVo();
+        response.setSuccess(true);
+        response.setMessage("Profile updated successfully");
+        return response;
+}
+
 }
