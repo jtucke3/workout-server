@@ -18,4 +18,9 @@ public class UserConv {
     public static ChangePasswordRequestDTO changePasswordReuquestToDTO(UUID userId, ChangePasswordWebRequestVo vo) {
         return new ChangePasswordRequestDTO(userId, vo.getCurrentPassword(), vo.getNewPassword());
     }
+
+    public static UserProfileWVO userProfileWebRequestToWVO(UUID userId, UserProfileWebRequestVo webVo) {
+    return new UserProfileWVO(webVo.getUsername(), webVo.getEmail());
+}
+
 }
