@@ -5,4 +5,5 @@ import com.jtucke3.workoutapi.dto.user.UserDTO;
 
 public interface IUserAccountExternalService {
     UserDTO changePassword(ChangePasswordRequestDTO request);
+    UserDTO updateProfile(Long userId, UserProfileWVO wvo);
 }

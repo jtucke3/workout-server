@@ -16,4 +16,9 @@ public class UserAccountExternalService implements IUserAccountExternalService {
     public UserDTO changePassword(ChangePasswordRequestDTO request) {
         return internal.changePassword(request);
     }
+
+    @Override
+    public UserDTO updateProfile(Long userId, UserProfileWVO wvo) {
+        return internal.updateProfile(userId, wvo);
+    }
 }
