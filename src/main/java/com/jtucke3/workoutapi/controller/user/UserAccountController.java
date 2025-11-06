@@ -4,6 +4,7 @@ import com.jtucke3.workoutapi.converter.user.UserConv;
 import com.jtucke3.workoutapi.dto.user.ChangePasswordRequestDTO;
 import com.jtucke3.workoutapi.dto.user.UserDTO;
 import com.jtucke3.workoutapi.service.user.external.IUserAccountExternalService;
+import com.jtucke3.workoutapi.webVo.user.UserProfileWVO;
 import com.jtucke3.workoutapi.webVo.user.ChangePasswordWebRequestVo;
 import com.jtucke3.workoutapi.webVo.general.BaseWebResponseVo;
 import lombok.RequiredArgsConstructor;
@@ -30,16 +31,15 @@ public class UserAccountController {
         return response;
     }
 
-    @PutMapping("/update-profile")
+        @PutMapping("/update-profile")
     public BaseWebResponseVo updateProfile(@RequestHeader("X-User-Id") UUID userId,
-                                        @RequestBody UserProfileWebRequestVo webVo) {
-        UserProfileWVO wvo = UserConv.userProfileWebRequestToWVO(userId, webVo);
+                                           @RequestBody UserProfileWVO wvo) {
         UserDTO updated = service.updateProfile(userId, wvo);
 
         BaseWebResponseVo response = new BaseWebResponseVo();
         response.setSuccess(true);
         response.setMessage("Profile updated successfully");
         return response;
-}
+    }
 
 }

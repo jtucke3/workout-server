@@ -1,3 +1,5 @@
+package com.jtucke3.workoutapi.webVo.user;
+
 public class UserProfileWVO {
     private String username;
     private String email;
