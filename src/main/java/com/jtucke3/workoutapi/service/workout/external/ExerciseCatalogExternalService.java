@@ -1,11 +1,13 @@
 package com.jtucke3.workoutapi.service.workout.external;
 
-import com.jtucke3.workoutapi.dto.workout.ExerciseCatalogItemDTO;
-import com.jtucke3.workoutapi.service.workout.internal.IExerciseCatalogInternalService;
-import lombok.RequiredArgsConstructor;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import com.jtucke3.workoutapi.dto.workout.excercise.ExerciseCatalogItemDTO;
+import com.jtucke3.workoutapi.service.workout.internal.IExerciseCatalogInternalService;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
