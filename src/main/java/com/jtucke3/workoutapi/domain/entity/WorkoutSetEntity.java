@@ -1,7 +1,6 @@
 package com.jtucke3.workoutapi.domain.entity;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 import org.hibernate.annotations.JdbcTypeCode;
@@ -10,8 +9,6 @@ import org.hibernate.type.SqlTypes;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -21,12 +18,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity @Table(name = "workouts")
+@Entity @Table(name = "workout_sets")
 @Getter @Setter @NoArgsConstructor
-public class WorkoutEntity {
-
-    public enum Status { IN_PROGRESS, COMPLETED, CANCELLED }
-
+public class WorkoutSetEntity {
     @Id
     @UuidGenerator
     @JdbcTypeCode(SqlTypes.CHAR)
@@ -34,21 +28,14 @@ public class WorkoutEntity {
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_id", nullable = false)
-    private UserEntity user;
+    @JoinColumn(name = "exercise_id", nullable = false)
+    private WorkoutExerciseEntity exercise;
 
     @Column(nullable = false)
-    private String title;
-
-    @Column(columnDefinition = "text")
-    private String notes;
+    private Double weight;
 
     @Column(nullable = false)
-    private LocalDateTime workoutAt;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Status status = Status.IN_PROGRESS;
+    private Integer reps;
 
     @Column(nullable = false)
     private Instant createdAt = Instant.now();
