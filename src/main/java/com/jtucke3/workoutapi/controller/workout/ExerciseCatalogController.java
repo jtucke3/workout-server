@@ -1,11 +1,16 @@
 package com.jtucke3.workoutapi.controller.workout;
 
-import com.jtucke3.workoutapi.dto.workout.ExerciseCatalogItemDTO;
-import com.jtucke3.workoutapi.service.workout.external.IExerciseCatalogExternalService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.jtucke3.workoutapi.dto.workout.exercise.ExerciseCatalogItemDTO;
+import com.jtucke3.workoutapi.service.workout.exercise.external.IExerciseCatalogExternalService;
+
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/exercises")

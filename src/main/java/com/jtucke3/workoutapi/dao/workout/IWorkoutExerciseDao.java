@@ -11,6 +11,6 @@ public interface IWorkoutExerciseDao {
     Optional<WorkoutExerciseEntity> findById(UUID exerciseId);
     List<WorkoutExerciseEntity> findByWorkoutId(UUID workoutId);
 
-    WorkoutSetEntity addSet(WorkoutExerciseEntity excercise);
+    WorkoutSetEntity addSet(UUID exerciseId);
     void removeSet(UUID setId);
 }

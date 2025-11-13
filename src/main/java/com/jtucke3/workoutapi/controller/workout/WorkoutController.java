@@ -1,11 +1,11 @@
 package com.jtucke3.workoutapi.controller.workout;
 
 import com.jtucke3.workoutapi.converter.workout.WorkoutConv;
-import com.jtucke3.workoutapi.dto.workout.excercise.AddExerciseRequestDTO;
-import com.jtucke3.workoutapi.dto.workout.excercise.AddExerciseResponseDTO;
+import com.jtucke3.workoutapi.dto.workout.exercise.AddExerciseRequestDTO;
+import com.jtucke3.workoutapi.dto.workout.exercise.AddExerciseResponseDTO;
 import com.jtucke3.workoutapi.dto.workout.workout.CreateWorkoutRequestDTO;
 import com.jtucke3.workoutapi.dto.workout.workout.CreateWorkoutResponseDTO;
-import com.jtucke3.workoutapi.service.workout.external.IWorkoutExternalService;
+import com.jtucke3.workoutapi.service.workout.workout.external.IWorkoutExternalService;
 import com.jtucke3.workoutapi.webVo.workout.AddExerciseWebVo;
 import com.jtucke3.workoutapi.webVo.workout.CreateWorkoutWebVo;
 import lombok.RequiredArgsConstructor;

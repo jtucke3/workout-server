@@ -17,7 +17,8 @@ import jakarta.persistence.PersistenceContext;
 @Repository
 public class WorkoutExerciseDao implements IWorkoutExerciseDao {
 
-    @PersistenceContext private EntityManager em;
+    @PersistenceContext
+    private EntityManager em;
 
     @Override
     public Optional<WorkoutExerciseEntity> findById(UUID exerciseId) {
@@ -37,7 +38,12 @@ public class WorkoutExerciseDao implements IWorkoutExerciseDao {
 
     @Transactional
     @Override
-    public WorkoutSetEntity addSet(WorkoutExerciseEntity exercise) {
+    public WorkoutSetEntity addSet(UUID exerciseId) {
+        var exercise = em.find(WorkoutExerciseEntity.class, exerciseId);
+        if (exercise == null) {
+            throw new IllegalArgumentException("Exercise not found: " + exerciseId);
+        }
+
         var set = new WorkoutSetEntity();
         set.setExercise(exercise);
         set.setWeight(0.0);
@@ -53,7 +59,9 @@ public class WorkoutExerciseDao implements IWorkoutExerciseDao {
     @Override
     public void removeSet(UUID setId) {
         var set = em.find(WorkoutSetEntity.class, setId);
-        if (set == null) throw new IllegalArgumentException("Set not found: " + setId);
+        if (set == null) {
+            throw new IllegalArgumentException("Set not found: " + setId);
+        }
 
         em.remove(set);
     }
