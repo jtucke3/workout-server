@@ -1,11 +1,11 @@
 package com.jtucke3.workoutapi.dao.workout;
 
-import com.jtucke3.workoutapi.domain.entity.WorkoutEntity;
-import com.jtucke3.workoutapi.domain.entity.WorkoutExerciseEntity;
-
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
+
+import com.jtucke3.workoutapi.domain.entity.WorkoutEntity;
+import com.jtucke3.workoutapi.domain.entity.WorkoutExerciseEntity;
 
 public interface IWorkoutDao {
     WorkoutEntity createWorkout(UUID userId, String title, LocalDateTime workoutAt, String notes);

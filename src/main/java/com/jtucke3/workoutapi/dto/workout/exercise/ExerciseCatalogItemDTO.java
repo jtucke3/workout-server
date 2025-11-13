@@ -1,4 +1,4 @@
-package com.jtucke3.workoutapi.dto.workout;
+package com.jtucke3.workoutapi.dto.workout.exercise;
 
 import java.util.UUID;
 

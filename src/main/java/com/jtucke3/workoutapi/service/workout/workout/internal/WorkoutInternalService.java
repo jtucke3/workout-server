@@ -1,11 +1,16 @@
-package com.jtucke3.workoutapi.service.workout.internal;
+package com.jtucke3.workoutapi.service.workout.workout.internal;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.jtucke3.workoutapi.dao.workout.IWorkoutDao;
 import com.jtucke3.workoutapi.domain.entity.WorkoutEntity;
-import com.jtucke3.workoutapi.dto.workout.*;
+import com.jtucke3.workoutapi.dto.workout.exercise.AddExerciseRequestDTO;
+import com.jtucke3.workoutapi.dto.workout.exercise.AddExerciseResponseDTO;
+import com.jtucke3.workoutapi.dto.workout.workout.CreateWorkoutRequestDTO;
+import com.jtucke3.workoutapi.dto.workout.workout.CreateWorkoutResponseDTO;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
