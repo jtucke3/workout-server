@@ -33,8 +33,11 @@ public class TotpInternalService implements ITotpInternalService {
     }
 
     @Override
-    public boolean isValid(String secret, int code) {
-        return verifier.isValidCode(secret, String.valueOf(code));
+    public boolean isValid(String secret, String code) {
+        CodeGenerator generator = new DefaultCodeGenerator(HashingAlgorithm.SHA1);
+        SystemTimeProvider timeProvider = new SystemTimeProvider();
+        DefaultCodeVerifier verifier = new DefaultCodeVerifier(generator, timeProvider);
+        return verifier.isValidCode(secret, code);
     }
 
     @Override

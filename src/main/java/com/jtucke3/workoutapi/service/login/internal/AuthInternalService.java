@@ -78,7 +78,7 @@ public class AuthInternalService implements IAuthInternalService {
         var secret = userDao.findTwoFactorSecretByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("2FA not enabled"));
 
-        if (!totp.isValid(secret, Integer.parseInt(req.code()))) {
+        if (!totp.isValid(secret, req.code())) {
             throw new IllegalArgumentException("Invalid 2FA code");
         }
 

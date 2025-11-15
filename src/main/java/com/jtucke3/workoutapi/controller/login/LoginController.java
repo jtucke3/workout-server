@@ -1,15 +1,15 @@
 package com.jtucke3.workoutapi.controller.login;
 
 import com.jtucke3.workoutapi.converter.login.AuthConv;
-import com.jtucke3.workoutapi.dto.login.LoginRequestDTO;
-import com.jtucke3.workoutapi.dto.login.LoginResponseDTO;
-import com.jtucke3.workoutapi.dto.login.RegisterRequestDTO;
-import com.jtucke3.workoutapi.dto.login.Verify2FARequestDTO;
+import com.jtucke3.workoutapi.dto.login.*;
 import com.jtucke3.workoutapi.dto.user.UserDTO;
 import com.jtucke3.workoutapi.service.login.external.IAuthExternalService;
 import com.jtucke3.workoutapi.webVo.login.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
 
 @RestController
 @RequestMapping("/api/auth")
@@ -39,8 +39,8 @@ public class LoginController {
     }
 
     // testing endpoint
-    // @PostMapping("/2fa/enable")
-    // public Enable2FAResponseDTO enable(@RequestParam("email") String email) {
-    //     return service.enable2faForCurrentUserWithQr(email);
-    // }
+    @PostMapping("/2fa/enable")
+    public String enable2fa(@RequestParam("email") String email) {
+        return service.enable2faForCurrentUser(email);
+    }
 }
