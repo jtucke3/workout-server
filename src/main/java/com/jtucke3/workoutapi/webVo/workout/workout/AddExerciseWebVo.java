@@ -1,4 +1,4 @@
-package com.jtucke3.workoutapi.webVo.workout;
+package com.jtucke3.workoutapi.webVo.workout.workout;
 
 import java.util.UUID;
 

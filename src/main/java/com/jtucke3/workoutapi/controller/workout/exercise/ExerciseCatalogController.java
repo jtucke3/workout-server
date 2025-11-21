@@ -1,4 +1,4 @@
-package com.jtucke3.workoutapi.controller.workout;
+package com.jtucke3.workoutapi.controller.workout.exercise;
 
 import java.util.List;
 

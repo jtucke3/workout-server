@@ -1,7 +1,7 @@
 package com.jtucke3.workoutapi.service.workout.workout.internal;
 
-import com.jtucke3.workoutapi.dto.workout.exercise.AddExerciseRequestDTO;
-import com.jtucke3.workoutapi.dto.workout.exercise.AddExerciseResponseDTO;
+import com.jtucke3.workoutapi.dto.workout.workout.AddExerciseRequestDTO;
+import com.jtucke3.workoutapi.dto.workout.workout.AddExerciseResponseDTO;
 import com.jtucke3.workoutapi.dto.workout.workout.CreateWorkoutRequestDTO;
 import com.jtucke3.workoutapi.dto.workout.workout.CreateWorkoutResponseDTO;
 

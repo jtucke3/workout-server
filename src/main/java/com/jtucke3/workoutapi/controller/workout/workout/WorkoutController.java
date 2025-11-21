@@ -1,17 +1,24 @@
-package com.jtucke3.workoutapi.controller.workout;
+package com.jtucke3.workoutapi.controller.workout.workout;
 
-import com.jtucke3.workoutapi.converter.workout.WorkoutConv;
-import com.jtucke3.workoutapi.dto.workout.exercise.AddExerciseRequestDTO;
-import com.jtucke3.workoutapi.dto.workout.exercise.AddExerciseResponseDTO;
+import java.util.UUID;
+
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.jtucke3.workoutapi.converter.workout.workout.WorkoutConv;
+import com.jtucke3.workoutapi.dto.workout.workout.AddExerciseRequestDTO;
+import com.jtucke3.workoutapi.dto.workout.workout.AddExerciseResponseDTO;
 import com.jtucke3.workoutapi.dto.workout.workout.CreateWorkoutRequestDTO;
 import com.jtucke3.workoutapi.dto.workout.workout.CreateWorkoutResponseDTO;
 import com.jtucke3.workoutapi.service.workout.workout.external.IWorkoutExternalService;
-import com.jtucke3.workoutapi.webVo.workout.AddExerciseWebVo;
-import com.jtucke3.workoutapi.webVo.workout.CreateWorkoutWebVo;
-import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import com.jtucke3.workoutapi.webVo.workout.workout.AddExerciseWebVo;
+import com.jtucke3.workoutapi.webVo.workout.workout.CreateWorkoutWebVo;
 
-import java.util.UUID;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/workouts")

@@ -5,8 +5,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.jtucke3.workoutapi.dao.workout.IWorkoutDao;
 import com.jtucke3.workoutapi.domain.entity.WorkoutEntity;
-import com.jtucke3.workoutapi.dto.workout.exercise.AddExerciseRequestDTO;
-import com.jtucke3.workoutapi.dto.workout.exercise.AddExerciseResponseDTO;
+import com.jtucke3.workoutapi.dto.workout.workout.AddExerciseRequestDTO;
+import com.jtucke3.workoutapi.dto.workout.workout.AddExerciseResponseDTO;
 import com.jtucke3.workoutapi.dto.workout.workout.CreateWorkoutRequestDTO;
 import com.jtucke3.workoutapi.dto.workout.workout.CreateWorkoutResponseDTO;
 

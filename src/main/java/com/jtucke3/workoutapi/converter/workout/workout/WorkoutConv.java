@@ -1,11 +1,11 @@
-package com.jtucke3.workoutapi.converter.workout;
+package com.jtucke3.workoutapi.converter.workout.workout;
 
 import java.util.UUID;
 
-import com.jtucke3.workoutapi.dto.workout.exercise.AddExerciseRequestDTO;
+import com.jtucke3.workoutapi.dto.workout.workout.AddExerciseRequestDTO;
 import com.jtucke3.workoutapi.dto.workout.workout.CreateWorkoutRequestDTO;
-import com.jtucke3.workoutapi.webVo.workout.AddExerciseWebVo;
-import com.jtucke3.workoutapi.webVo.workout.CreateWorkoutWebVo;
+import com.jtucke3.workoutapi.webVo.workout.workout.AddExerciseWebVo;
+import com.jtucke3.workoutapi.webVo.workout.workout.CreateWorkoutWebVo;
 
 public class WorkoutConv {
 
