@@ -30,8 +30,7 @@ public class SetController {
      * Update the reps for a set.
      */
     @PutMapping("/{setId}/reps")
-    public SetRepsResponseDTO setReps(@PathVariable("setId") UUID setId,
-                                         @RequestBody SetRepsWebVo webVo) {
+    public SetRepsResponseDTO setReps(@PathVariable("setId") UUID setId, @RequestBody SetRepsWebVo webVo) {
         SetRepsRequestDTO dto = SetConv.toSetRepsDTO(setId, webVo);
         return service.setReps(dto);
     }
@@ -40,8 +39,7 @@ public class SetController {
      * Update the weight for a set.
      */
     @PutMapping("/{setId}/weight")
-    public SetWeightResponseDTO setWeight(@PathVariable("setId") UUID setId,
-                                             @RequestBody SetWeightWebVo webVo) {
+    public SetWeightResponseDTO setWeight(@PathVariable("setId") UUID setId, @RequestBody SetWeightWebVo webVo) {
         SetWeightRequestDTO dto = SetConv.toSetWeightDTO(setId, webVo);
         return service.setWeight(dto);
     }
