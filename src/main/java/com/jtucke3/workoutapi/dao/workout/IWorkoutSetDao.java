@@ -8,8 +8,10 @@ import com.jtucke3.workoutapi.domain.entity.WorkoutSetEntity;
 
 public interface IWorkoutSetDao {
     Optional<WorkoutSetEntity> findById(UUID setId);
+
     List<WorkoutSetEntity> findByExerciseId(UUID exerciseId);
 
-    WorkoutSetEntity updateWeight(UUID setId, Double weight);
-    WorkoutSetEntity updateReps(UUID setId, Integer reps);
+    WorkoutSetEntity save(WorkoutSetEntity set);
+
+    void deleteById(UUID setId);
 }

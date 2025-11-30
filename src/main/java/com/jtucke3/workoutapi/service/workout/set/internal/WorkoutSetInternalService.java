@@ -4,10 +4,8 @@ import org.springframework.stereotype.Service;
 
 import com.jtucke3.workoutapi.dao.workout.IWorkoutSetDao;
 import com.jtucke3.workoutapi.domain.entity.WorkoutSetEntity;
-import com.jtucke3.workoutapi.dto.workout.set.SetRepsRequestDTO;
-import com.jtucke3.workoutapi.dto.workout.set.SetRepsResponseDTO;
-import com.jtucke3.workoutapi.dto.workout.set.SetWeightRequestDTO;
-import com.jtucke3.workoutapi.dto.workout.set.SetWeightResponseDTO;
+import com.jtucke3.workoutapi.dto.workout.set.SetResponseDTO;
+import com.jtucke3.workoutapi.dto.workout.set.UpdateSetRequestDTO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -18,18 +16,27 @@ public class WorkoutSetInternalService implements IWorkoutSetInternalService {
     private final IWorkoutSetDao dao;
 
     @Override
-    public SetWeightResponseDTO setWeight(SetWeightRequestDTO req) {
+    public SetResponseDTO updateSet(UpdateSetRequestDTO req) {
         WorkoutSetEntity set = dao.findById(req.setId())
             .orElseThrow(() -> new IllegalArgumentException("Set not found: " + req.setId()));
-        set.setWeight(req.weight());
-        return new SetWeightResponseDTO(set.getId(), set.getWeight());
-    }
 
-    @Override
-    public SetRepsResponseDTO setReps(SetRepsRequestDTO req) {
-        WorkoutSetEntity set = dao.findById(req.setId())
-            .orElseThrow(() -> new IllegalArgumentException("Set not found: " + req.setId()));
-        set.setReps(req.reps());
-        return new SetRepsResponseDTO(set.getId(), set.getReps());
+        // Apply updates if provided
+        if (req.reps() != null) {
+            set.setReps(req.reps());
+        }
+        if (req.weight() != null) {
+            set.setWeight(req.weight());
+        }
+
+        // Persist changes
+        dao.save(set);
+
+        // Return response DTO
+        return new SetResponseDTO(
+            set.getId(),
+            set.getWeight(),
+            set.getReps(),
+            set.getCreatedAt()
+        );
     }
 }
