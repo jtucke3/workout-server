@@ -1,9 +1,15 @@
 package com.jtucke3.workoutapi.converter.login;
 
 import org.springframework.stereotype.Component;
-import com.jtucke3.workoutapi.webVo.login.*;
-import com.jtucke3.workoutapi.dto.login.*;
-import com.jtucke3.workoutapi.dto.user.UserDTO;
+
+import com.jtucke3.workoutapi.dto.login.LoginRequestDTO;
+import com.jtucke3.workoutapi.dto.login.LoginResponseDTO;
+import com.jtucke3.workoutapi.dto.login.RegisterRequestDTO;
+import com.jtucke3.workoutapi.dto.login.Verify2FARequestDTO;
+import com.jtucke3.workoutapi.webVo.login.LoginWebRequestWebVo;
+import com.jtucke3.workoutapi.webVo.login.LoginWebResponseWebVo;
+import com.jtucke3.workoutapi.webVo.login.RegisterWebRequestWebVo;
+import com.jtucke3.workoutapi.webVo.login.Verify2FAWebRequestWebVo;
 
 @Component
 public class AuthConv {
