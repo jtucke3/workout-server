@@ -1,10 +1,7 @@
 package com.jtucke3.workoutapi.controller.login;
 
 import com.jtucke3.workoutapi.converter.login.AuthConv;
-import com.jtucke3.workoutapi.dto.login.LoginRequestDTO;
-import com.jtucke3.workoutapi.dto.login.LoginResponseDTO;
-import com.jtucke3.workoutapi.dto.login.RegisterRequestDTO;
-import com.jtucke3.workoutapi.dto.login.Verify2FARequestDTO;
+import com.jtucke3.workoutapi.dto.login.*;
 import com.jtucke3.workoutapi.dto.user.UserDTO;
 import com.jtucke3.workoutapi.service.login.external.IAuthExternalService;
 import com.jtucke3.workoutapi.webVo.login.*;
@@ -52,4 +49,12 @@ public class LoginController {
         String otpauthUri = service.enable2faForCurrentUser(email);
         return Map.of("otpauthUri", otpauthUri);
     }
+
+    // NEW: confirm that the user actually completed setup
+    @PostMapping("/2fa/confirm-setup")
+    public Map<String, Object> confirm2faSetup(@RequestBody Confirm2FASetupWebRequestWebVo webVo) {
+        service.confirm2faSetup(webVo.getEmail(), webVo.getCode());
+        return Map.of("success", true);
+    }
+
 }

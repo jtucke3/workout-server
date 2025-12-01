@@ -1,9 +1,6 @@
 package com.jtucke3.workoutapi.service.login.external;
 
-import com.jtucke3.workoutapi.dto.login.LoginRequestDTO;
-import com.jtucke3.workoutapi.dto.login.LoginResponseDTO;
-import com.jtucke3.workoutapi.dto.login.RegisterRequestDTO;
-import com.jtucke3.workoutapi.dto.login.Verify2FARequestDTO;
+import com.jtucke3.workoutapi.dto.login.*;
 import com.jtucke3.workoutapi.dto.user.UserDTO;
 
 public interface IAuthExternalService {
@@ -11,4 +8,5 @@ public interface IAuthExternalService {
     LoginResponseDTO verify2fa(Verify2FARequestDTO request);
     UserDTO register(RegisterRequestDTO request);
     String enable2faForCurrentUser(String email);
+    public void confirm2faSetup(String email, String code);
 }

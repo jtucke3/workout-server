@@ -1,9 +1,6 @@
 package com.jtucke3.workoutapi.service.login.external;
 
-import com.jtucke3.workoutapi.dto.login.LoginRequestDTO;
-import com.jtucke3.workoutapi.dto.login.LoginResponseDTO;
-import com.jtucke3.workoutapi.dto.login.RegisterRequestDTO;
-import com.jtucke3.workoutapi.dto.login.Verify2FARequestDTO;
+import com.jtucke3.workoutapi.dto.login.*;
 import com.jtucke3.workoutapi.dto.user.UserDTO;
 import com.jtucke3.workoutapi.service.login.internal.IAuthInternalService;
 import lombok.RequiredArgsConstructor;
@@ -34,4 +31,10 @@ public class AuthExternalService implements IAuthExternalService {
     public String enable2faForCurrentUser(String email) {
         return internal.enable2faForUser(email);
     }
+
+    @Override
+    public void confirm2faSetup(String email, String code) {
+        internal.confirm2faSetup(email, code);
+    }
+
 }

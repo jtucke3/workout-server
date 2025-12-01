@@ -84,4 +84,16 @@ public class UserDao implements IUserDao {
         em.merge(e);
     }
 
+    public boolean isTwoFactorEnabled(String email) {
+        var cb = em.getCriteriaBuilder();
+        var cq = cb.createQuery(Boolean.class);
+        var root = cq.from(UserEntity.class);
+
+        cq.select(root.get("twoFactorEnabled"))
+                .where(cb.equal(cb.lower(root.get("email")), email.toLowerCase()));
+
+        var list = em.createQuery(cq).setMaxResults(1).getResultList();
+        return !list.isEmpty() && Boolean.TRUE.equals(list.get(0));
+    }
+
 }

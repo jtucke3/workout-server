@@ -15,4 +15,5 @@ public interface IAuthInternalService {
     LoginResponseDTO verify2fa(Verify2FARequestDTO req);
 
     String enable2faForUser(String email);
+    void confirm2faSetup(String email, String code);
 }

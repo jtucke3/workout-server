@@ -12,4 +12,5 @@ public interface IUserDao {
     UserDTO saveNew(String email, String displayName, String passwordHash);
     Optional<String> findTwoFactorSecretByEmail(String email);
     void storeTwoFactorSecret(String email, String secret, boolean enabled);
+    boolean isTwoFactorEnabled(String email);
 }

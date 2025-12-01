@@ -55,14 +55,14 @@ public class AuthInternalService implements IAuthInternalService {
         return userDao.saveNew(req.email(), req.displayName(), hash);
     }
 
-    // 1) startLogin – tell frontend whether 2FA is configured
     @Override
     @Transactional(readOnly = true)
     public LoginResponseDTO startLogin(String email, String password) {
         var user = validateCredentials(email, password);
 
-        var secretOpt = userDao.findTwoFactorSecretByEmail(email);
-        if (secretOpt.isPresent()) {
+        boolean twoFactorEnabled = userDao.isTwoFactorEnabled(email);
+
+        if (twoFactorEnabled) {
             var challengeId = challenges.create(email.toLowerCase());
             // 2FA is configured, and we require verification now
             return LoginResponseDTO.needs2FA(challengeId, true);
@@ -90,17 +90,44 @@ public class AuthInternalService implements IAuthInternalService {
         return LoginResponseDTO.token(user, issueToken(user), true);
     }
 
-    // 3) enable2faForUser – generate secret and mark 2FA as enabled
     @Override
     @Transactional
     public String enable2faForUser(String email) {
         var normalized = email.toLowerCase();
         var secret = totp.newSecret();
 
-        // This both stores the secret and marks 2FA as enabled = true
-        userDao.storeTwoFactorSecret(normalized, secret, true);
+        // Store the secret but DO NOT enable yet
+        userDao.storeTwoFactorSecret(normalized, secret, false);
 
         // Return otpauth:// URI for QR generation
         return totp.otpauthUri("RedbirdWorkout", normalized, secret);
     }
+
+
+    @Override
+    @Transactional
+    public void confirm2faSetup(String email, String code) {
+        var normalized = email.toLowerCase();
+
+        var secretOpt = userDao.findTwoFactorSecretByEmail(normalized);
+        if (secretOpt.isEmpty()) {
+            throw new IllegalStateException("No pending 2FA secret for user " + normalized);
+        }
+
+        var secret = secretOpt.get();
+
+        if (code == null || !code.matches("\\d{6}")) {
+            throw new IllegalArgumentException("Invalid 2FA code format");
+        }
+
+        int numericCode = Integer.parseInt(code);
+
+        if (!totp.isValid(secret, numericCode)) {
+            throw new IllegalArgumentException("Invalid 2FA code");
+        }
+
+        // Only now mark 2FA as enabled for this user
+        userDao.storeTwoFactorSecret(normalized, secret, true);
+    }
+
 }
