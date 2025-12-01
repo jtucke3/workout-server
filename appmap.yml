@@ -1,0 +1,6 @@
+name: workout-api
+packages:
+  - path: com.jtucke3.workoutapi.controller
+  - path: com.jtucke3.workoutapi.service
+  - path: com.jtucke3.workoutapi.dao
+  - path: com.jtucke3.workoutapi.converter
