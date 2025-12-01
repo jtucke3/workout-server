@@ -6,6 +6,7 @@ import com.jtucke3.workoutapi.dao.workout.IWorkoutSetDao;
 import com.jtucke3.workoutapi.domain.entity.WorkoutSetEntity;
 import com.jtucke3.workoutapi.dto.workout.set.SetResponseDTO;
 import com.jtucke3.workoutapi.dto.workout.set.UpdateSetRequestDTO;
+import com.jtucke3.workoutapi.mappers.workout.set.SetMapper;
 
 import lombok.RequiredArgsConstructor;
 
@@ -32,11 +33,6 @@ public class WorkoutSetInternalService implements IWorkoutSetInternalService {
         dao.save(set);
 
         // Return response DTO
-        return new SetResponseDTO(
-            set.getId(),
-            set.getWeight(),
-            set.getReps(),
-            set.getCreatedAt()
-        );
+        return SetMapper.toDTO(set);
     }
 }

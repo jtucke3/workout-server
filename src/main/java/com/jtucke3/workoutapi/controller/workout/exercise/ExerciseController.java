@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.jtucke3.workoutapi.converter.workout.exercise.ExerciseConv;
 import com.jtucke3.workoutapi.dto.workout.exercise.AddSetRequestDTO;
-import com.jtucke3.workoutapi.dto.workout.exercise.AddSetResponseDTO;
+import com.jtucke3.workoutapi.dto.workout.exercise.ExerciseResponseDTO;
 import com.jtucke3.workoutapi.dto.workout.exercise.RemoveSetRequestDTO;
-import com.jtucke3.workoutapi.dto.workout.exercise.RemoveSetResponseDTO;
 import com.jtucke3.workoutapi.service.workout.exercise.external.IWorkoutExerciseExternalService;
-import com.jtucke3.workoutapi.webVo.workout.exercise.AddSetWebVo;
-import com.jtucke3.workoutapi.webVo.workout.exercise.RemoveSetWebVo;
+import com.jtucke3.workoutapi.webVo.workout.exercise.AddSetRequestWebVo;
+import com.jtucke3.workoutapi.webVo.workout.exercise.ExerciseResponseWebVo;
+import com.jtucke3.workoutapi.webVo.workout.exercise.RemoveSetRequestWebVo;
 
 import lombok.RequiredArgsConstructor;
 
@@ -28,14 +28,15 @@ public class ExerciseController {
     private final IWorkoutExerciseExternalService service;
 
     /**
-     * Add a new blank set to an exercise.
-     * The exerciseId comes from the path; body is a blank WebVo for consistency.
+     * Add a new set to an exercise.
+     * The exerciseId comes from the path; body carries set details.
      */
     @PostMapping
-    public AddSetResponseDTO addSet(@PathVariable("exerciseId") UUID exerciseId,
-                                    @RequestBody AddSetWebVo webVo) {
+    public ExerciseResponseWebVo addSet(@PathVariable("exerciseId") UUID exerciseId,
+                                        @RequestBody AddSetRequestWebVo webVo) {
         AddSetRequestDTO dto = ExerciseConv.toAddSetDTO(exerciseId, webVo);
-        return service.addSet(dto);
+        ExerciseResponseDTO responseDto = service.addSet(dto);
+        return ExerciseConv.toResponseWebVo(responseDto);
     }
 
     /**
@@ -43,9 +44,10 @@ public class ExerciseController {
      * The setId comes from the WebVo body.
      */
     @DeleteMapping
-    public RemoveSetResponseDTO removeSet(@PathVariable("exerciseId") UUID exerciseId,
-                                          @RequestBody RemoveSetWebVo webVo) {
+    public ExerciseResponseWebVo removeSet(@PathVariable("exerciseId") UUID exerciseId,
+                                           @RequestBody RemoveSetRequestWebVo webVo) {
         RemoveSetRequestDTO dto = ExerciseConv.toRemoveSetDTO(webVo);
-        return service.removeSet(dto);
+        ExerciseResponseDTO responseDto = service.removeSet(dto);
+        return ExerciseConv.toResponseWebVo(responseDto);
     }
 }
