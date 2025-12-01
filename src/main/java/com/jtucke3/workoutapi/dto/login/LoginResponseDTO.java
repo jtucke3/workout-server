@@ -6,12 +6,14 @@ public record LoginResponseDTO(
         String token,
         UserDTO user,
         boolean requires2FA,
-        String challengeId
+        String challengeId,
+        boolean hasTwoFactorConfigured
 ) {
-    public static LoginResponseDTO needs2FA(String challengeId) {
-        return new LoginResponseDTO(null, null, true, challengeId);
+    public static LoginResponseDTO needs2FA(String challengeId, boolean hasTwoFactorConfigured) {
+        return new LoginResponseDTO(null, null, true, challengeId, hasTwoFactorConfigured);
     }
-    public static LoginResponseDTO token(UserDTO user, String token) {
-        return new LoginResponseDTO(token, user, false, null);
+
+    public static LoginResponseDTO token(UserDTO user, String token, boolean hasTwoFactorConfigured) {
+        return new LoginResponseDTO(token, user, false, null, hasTwoFactorConfigured);
     }
 }

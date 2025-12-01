@@ -30,11 +30,16 @@ public class AuthConv {
         }
         web.setRequires2FA(dto.requires2FA());
         web.setChallengeId(dto.challengeId());
+        web.setHasTwoFactorConfigured(dto.hasTwoFactorConfigured());
         return web;
     }
 
     public RegisterRequestDTO toDto(RegisterWebRequestWebVo web) {
-        return new RegisterRequestDTO(norm(web.getEmail()), safe(web.getPassword()), trim(web.getDisplayName()));
+        return new RegisterRequestDTO(
+                norm(web.getEmail()),
+                safe(web.getPassword()),
+                trim(web.getDisplayName())
+        );
     }
 
     public Verify2FARequestDTO toDto(Verify2FAWebRequestWebVo web) {

@@ -55,22 +55,26 @@ public class AuthInternalService implements IAuthInternalService {
         return userDao.saveNew(req.email(), req.displayName(), hash);
     }
 
-    @Transactional(readOnly = true)
+    // 1) startLogin – tell frontend whether 2FA is configured
     @Override
+    @Transactional(readOnly = true)
     public LoginResponseDTO startLogin(String email, String password) {
         var user = validateCredentials(email, password);
 
         var secretOpt = userDao.findTwoFactorSecretByEmail(email);
         if (secretOpt.isPresent()) {
             var challengeId = challenges.create(email.toLowerCase());
-            return LoginResponseDTO.needs2FA(challengeId);
+            // 2FA is configured, and we require verification now
+            return LoginResponseDTO.needs2FA(challengeId, true);
         } else {
-            return LoginResponseDTO.token(user, issueToken(user));
+            // No 2FA configured yet, regular token login
+            return LoginResponseDTO.token(user, issueToken(user), false);
         }
     }
 
-    @Transactional(readOnly = true)
+    // 2) verify2fa – successful verification implies 2FA is configured
     @Override
+    @Transactional
     public LoginResponseDTO verify2fa(Verify2FARequestDTO req) {
         var email = challenges.consume(req.challengeId())
                 .orElseThrow(() -> new IllegalArgumentException("Challenge expired or invalid"));
@@ -83,14 +87,20 @@ public class AuthInternalService implements IAuthInternalService {
         }
 
         var user = userDao.findPublicByEmail(email).orElseThrow();
-        return LoginResponseDTO.token(user, issueToken(user));
+        return LoginResponseDTO.token(user, issueToken(user), true);
     }
 
-    @Transactional
+    // 3) enable2faForUser – generate secret and mark 2FA as enabled
     @Override
+    @Transactional
     public String enable2faForUser(String email) {
+        var normalized = email.toLowerCase();
         var secret = totp.newSecret();
-        userDao.storeTwoFactorSecret(email.toLowerCase(), secret, true);
-        return totp.otpauthUri("RedbirdWorkout", email.toLowerCase(), secret);
+
+        // This both stores the secret and marks 2FA as enabled = true
+        userDao.storeTwoFactorSecret(normalized, secret, true);
+
+        // Return otpauth:// URI for QR generation
+        return totp.otpauthUri("RedbirdWorkout", normalized, secret);
     }
 }
