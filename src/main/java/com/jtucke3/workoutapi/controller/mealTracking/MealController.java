@@ -23,27 +23,39 @@ import com.jtucke3.workoutapi.webVo.mealTracking.UpdateMealRequestWebVo;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/meals")
+@RequestMapping("/api/meals/{userId}")
 @RequiredArgsConstructor
 public class MealController {
 
     private final IMealExternalService mealService;
 
     // --- Create ---
-    @PostMapping("/create")
-    public ResponseEntity<MealResponseWebVo> createMeal(@RequestBody CreateMealRequestWebVo vo) {
-        MealResponseDTO dto = mealService.createMeal(MealConv.toDto(vo));
+    @PostMapping
+    public ResponseEntity<MealResponseWebVo> createMeal(
+            @PathVariable UUID userId,
+            @RequestBody CreateMealRequestWebVo vo) {
+        // ensure path userId is used
+        CreateMealRequestWebVo fixedVo = new CreateMealRequestWebVo(
+                userId,
+                vo.name(),
+                vo.calories(),
+                vo.mealAtUtc(),
+                vo.notes()
+        );
+        MealResponseDTO dto = mealService.createMeal(MealConv.toDto(fixedVo));
         return ResponseEntity.ok(MealConv.toWebVo(dto));
     }
 
     // --- Update ---
     @PutMapping("/{mealId}")
     public ResponseEntity<MealResponseWebVo> updateMeal(
+            @PathVariable UUID userId,
             @PathVariable UUID mealId,
             @RequestBody UpdateMealRequestWebVo vo) {
-        // ensure path ID matches body ID
+        // ensure path IDs match body IDs
         UpdateMealRequestWebVo fixedVo = new UpdateMealRequestWebVo(
                 mealId,
+                userId,
                 vo.name(),
                 vo.calories(),
                 vo.mealAtUtc(),
@@ -55,15 +67,17 @@ public class MealController {
 
     // --- Get by ID ---
     @GetMapping("/{mealId}")
-    public ResponseEntity<MealResponseWebVo> getMealById(@PathVariable UUID mealId) {
+    public ResponseEntity<MealResponseWebVo> getMealById(
+            @PathVariable UUID mealId) {
         MealResponseDTO dto = mealService.getMealById(mealId);
         return ResponseEntity.ok(MealConv.toWebVo(dto));
     }
 
     // --- Get by User ---
-    @GetMapping("/user/{userEmail}")
-    public ResponseEntity<List<MealResponseWebVo>> getMealsByUser(@PathVariable String userEmail) {
-        List<MealResponseDTO> dtos = mealService.getMealsByEmail(userEmail);
+    @GetMapping
+    public ResponseEntity<List<MealResponseWebVo>> getMealsByUser(
+            @PathVariable UUID userId) {
+        List<MealResponseDTO> dtos = mealService.getMealsByUserId(userId);
         return ResponseEntity.ok(
                 dtos.stream().map(MealConv::toWebVo).toList()
         );

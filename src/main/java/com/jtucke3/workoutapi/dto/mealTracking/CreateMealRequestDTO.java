@@ -4,9 +4,9 @@ import java.time.Instant;
 import java.util.UUID;
 
 public record CreateMealRequestDTO(
-    String userEmail,
+    UUID userId,
     String name,
     int calories,
-    Instant mealAtUtc,   // renamed for consistency with entity
+    Instant mealAtUtc,   // aligned with entity field
     String notes
 ) {}

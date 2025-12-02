@@ -5,6 +5,7 @@ import java.util.UUID;
 
 public record UpdateMealRequestWebVo(
     UUID mealId,
+    UUID userId,
     String name,
     Integer calories,
     Instant mealAtUtc,

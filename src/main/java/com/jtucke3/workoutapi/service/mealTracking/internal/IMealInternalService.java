@@ -15,7 +15,7 @@ public interface IMealInternalService {
 
     MealResponseDTO findById(UUID mealId);
 
-    List<MealResponseDTO> findByUserEmail(String userEmail);
+    List<MealResponseDTO> findByUserId(UUID userId);
 
     void deleteMeal(UUID mealId);
 }

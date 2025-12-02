@@ -4,8 +4,8 @@ import java.time.Instant;
 import java.util.UUID;
 
 public record MealResponseDTO(
-    UUID id,
-    String userEmail,
+    UUID mealId,
+    UUID userId,
     String name,
     int calories,
     Instant mealAtUtc,

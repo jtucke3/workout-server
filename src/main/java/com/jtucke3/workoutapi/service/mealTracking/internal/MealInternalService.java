@@ -7,11 +7,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jtucke3.workoutapi.dao.mealTracking.IMealDao;
+import com.jtucke3.workoutapi.domain.entity.UserEntity;
 import com.jtucke3.workoutapi.domain.entity.mealTracking.MealEntity;
 import com.jtucke3.workoutapi.dto.mealTracking.CreateMealRequestDTO;
 import com.jtucke3.workoutapi.dto.mealTracking.MealResponseDTO;
 import com.jtucke3.workoutapi.dto.mealTracking.UpdateMealRequestDTO;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -20,16 +23,28 @@ public class MealInternalService implements IMealInternalService {
 
     private final IMealDao mealDao;
 
+    @PersistenceContext
+    private final EntityManager em;
+
     @Transactional
     @Override
     public MealResponseDTO createMeal(CreateMealRequestDTO req) {
-        var meal = mealDao.createMeal(
-                req.userEmail(),
-                req.name(),
-                req.calories(),
-                req.mealAtUtc(),
-                req.notes()
-        );
+        // Resolve user entity by ID
+        UserEntity user = em.find(UserEntity.class, req.userId());
+        if (user == null) {
+            throw new IllegalArgumentException("User not found: " + req.userId());
+        }
+
+        // Build entity
+        MealEntity meal = new MealEntity();
+        meal.setUser(user);
+        meal.setName(req.name());
+        meal.setCalories(req.calories());
+        meal.setMealAtUtc(req.mealAtUtc());
+        meal.setNotes(req.notes());
+
+        // Persist
+        meal = mealDao.saveMeal(meal);
         return toResponse(meal);
     }
 
@@ -58,8 +73,8 @@ public class MealInternalService implements IMealInternalService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<MealResponseDTO> findByUserEmail(String userEmail) {
-        return mealDao.findByUserEmail(userEmail).stream()
+    public List<MealResponseDTO> findByUserId(UUID userId) {
+        return mealDao.findByUserId(userId).stream()
                 .map(this::toResponse)
                 .toList();
     }
@@ -74,7 +89,7 @@ public class MealInternalService implements IMealInternalService {
     private MealResponseDTO toResponse(MealEntity meal) {
         return new MealResponseDTO(
                 meal.getId(),
-                meal.getUser().getEmail(),
+                meal.getUser().getId(),   
                 meal.getName(),
                 meal.getCalories(),
                 meal.getMealAtUtc(),

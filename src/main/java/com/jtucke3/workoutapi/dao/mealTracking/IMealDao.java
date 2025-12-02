@@ -1,6 +1,5 @@
 package com.jtucke3.workoutapi.dao.mealTracking;
 
-import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -12,12 +11,10 @@ public interface IMealDao {
     // --- Queries ---
     Optional<MealEntity> findById(UUID mealId);
 
-    List<MealEntity> findByUserEmail(String userEmail);
+    List<MealEntity> findByUserId(UUID userId);
 
     // --- Persistence ---
-    MealEntity saveMeal(MealEntity meal);  // update existing or persist new
+    MealEntity saveMeal(MealEntity meal);   // covers both create + update
 
-    MealEntity createMeal(String userEmail, String name, int calories, Instant mealAtUtc, String notes);
-
-    void deleteMeal(UUID mealId);          // hard delete by ID
+    void deleteMeal(UUID mealId);           // hard delete by ID
 }
