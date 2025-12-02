@@ -16,21 +16,20 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.disable())
 
-                // let anonymous requests through to auth + public API endpoints
+                // let anonymous requests through to all auth endpoints
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(
+                        .requestMatchers("/api/auth/**",
                                 "/api/auth/**",
                                 "/api/workouts/**",
                                 "/api/exercises/**",
-                                "/api/friends/**"    // <--- allow friends endpoints
-                        ).permitAll()
+                                "/api/meals/**").permitAll()
                         .anyRequest().authenticated()
                 )
 
                 // keep anonymous enabled (default, but we’ll be explicit)
                 .anonymous(Customizer.withDefaults())
 
-                // don’t show the browser basic-auth popup
+                // don’t show the browser basic-auth popup (optional)
                 .httpBasic(httpBasic -> httpBasic.disable());
 
         return http.build();
