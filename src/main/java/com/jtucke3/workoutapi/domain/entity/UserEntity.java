@@ -46,4 +46,7 @@ public class UserEntity {
 
     @Column(name = "two_factor_secret")
     private String twoFactorSecret;
+
+    @Column(name = "profile_private", nullable = false)
+    private boolean profilePrivate = false;
 }
