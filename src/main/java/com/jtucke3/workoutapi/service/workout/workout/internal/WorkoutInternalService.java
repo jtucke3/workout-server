@@ -6,9 +6,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.jtucke3.workoutapi.dao.workout.IWorkoutDao;
 import com.jtucke3.workoutapi.domain.entity.WorkoutEntity;
 import com.jtucke3.workoutapi.dto.workout.workout.AddExerciseRequestDTO;
-import com.jtucke3.workoutapi.dto.workout.workout.AddExerciseResponseDTO;
 import com.jtucke3.workoutapi.dto.workout.workout.CreateWorkoutRequestDTO;
-import com.jtucke3.workoutapi.dto.workout.workout.CreateWorkoutResponseDTO;
+import com.jtucke3.workoutapi.dto.workout.workout.RemoveExerciseRequestDTO;
+import com.jtucke3.workoutapi.dto.workout.workout.WorkoutResponseDTO;
+import com.jtucke3.workoutapi.mappers.workout.workout.WorkoutMapper;
 
 import lombok.RequiredArgsConstructor;
 
@@ -20,21 +21,36 @@ public class WorkoutInternalService implements IWorkoutInternalService {
 
     @Transactional
     @Override
-    public CreateWorkoutResponseDTO create(CreateWorkoutRequestDTO req) {
-        var w = workoutDao.createWorkout(req.userId(), req.title(), req.workoutAt(), req.notes());
-        return new CreateWorkoutResponseDTO(w.getId());
+    public WorkoutResponseDTO create(CreateWorkoutRequestDTO req) {
+        var workout = workoutDao.createWorkout(req.userId(), req.title(), req.workoutAt(), req.notes());
+        return WorkoutMapper.toDTO(workout);
     }
 
     @Transactional
     @Override
-    public AddExerciseResponseDTO addExercise(AddExerciseRequestDTO req) {
+    public WorkoutResponseDTO addExercise(AddExerciseRequestDTO req) {
         var workout = workoutDao.findWorkoutById(req.workoutId())
                 .orElseThrow(() -> new IllegalArgumentException("Workout not found"));
 
-        if (workout.getStatus() != WorkoutEntity.Status.IN_PROGRESS)
+        if (workout.getStatus() != WorkoutEntity.Status.IN_PROGRESS) {
             throw new IllegalStateException("Cannot modify a non in-progress workout");
+        }
 
-        var ex = workoutDao.addExercise(workout, req.name(), req.notes(), req.position(), req.catalogId());
-        return new AddExerciseResponseDTO(ex.getId());
+        workoutDao.addExercise(workout, req.name(), req.notes(), req.bodyPart(), req.equipment());
+        return WorkoutMapper.toDTO(workout);
+    }
+
+    @Transactional
+    @Override
+    public WorkoutResponseDTO removeExercise(RemoveExerciseRequestDTO req) {
+        var workout = workoutDao.findWorkoutById(req.workoutId())
+                .orElseThrow(() -> new IllegalArgumentException("Workout not found"));
+
+        if (workout.getStatus() != WorkoutEntity.Status.IN_PROGRESS) {
+            throw new IllegalStateException("Cannot modify a non in-progress workout");
+        }
+
+        workoutDao.removeExercise(req.exerciseId());
+        return WorkoutMapper.toDTO(workout);
     }
 }

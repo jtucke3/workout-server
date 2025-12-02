@@ -1,25 +1,33 @@
 package com.jtucke3.workoutapi.dao.workout;
 
-import com.jtucke3.workoutapi.domain.entity.*;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.util.Optional;
-import java.util.UUID;
+import com.jtucke3.workoutapi.domain.entity.UserEntity;
+import com.jtucke3.workoutapi.domain.entity.WorkoutEntity;
+import com.jtucke3.workoutapi.domain.entity.WorkoutExerciseEntity;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 
 @Repository
 public class WorkoutDao implements IWorkoutDao {
 
-    @PersistenceContext private EntityManager em;
+    @PersistenceContext
+    private EntityManager em;
 
     @Transactional
     @Override
     public WorkoutEntity createWorkout(UUID userId, String title, LocalDateTime workoutAt, String notes) {
         var user = em.find(UserEntity.class, userId);
-        if (user == null) throw new IllegalArgumentException("User not found: " + userId);
+        if (user == null) {
+            throw new IllegalArgumentException("User not found: " + userId);
+        }
 
         var w = new WorkoutEntity();
         w.setUser(user);
@@ -43,27 +51,41 @@ public class WorkoutDao implements IWorkoutDao {
     public WorkoutExerciseEntity addExercise(WorkoutEntity workout,
                                              String name,
                                              String notes,
-                                             Integer position,
-                                             UUID catalogId) {
-        var ex = new WorkoutExerciseEntity();
-        ex.setWorkout(workout);
-
-        if (catalogId != null) {
-            var cat = em.find(ExerciseCatalogEntity.class, catalogId);
-            if (cat == null) throw new IllegalArgumentException("Catalog item not found: " + catalogId);
-            ex.setCatalog(cat);
-            ex.setName(cat.getName());
-        } else {
-            if (name == null || name.isBlank())
-                throw new IllegalArgumentException("Name required when catalogId is null");
-            ex.setName(name);
+                                             String bodyPart,
+                                             String equipment) {
+        if (name == null || name.isBlank()) {
+            throw new IllegalArgumentException("Exercise name is required");
         }
 
+        var ex = new WorkoutExerciseEntity();
+        ex.setWorkout(workout);
+        ex.setName(name);
         ex.setNotes(notes);
-        ex.setPosition(position != null ? position : 1);
+        ex.setBodyPart(bodyPart);
+        ex.setEquipment(equipment);
+
         em.persist(ex);
         em.flush();
         return ex;
     }
-    
+
+    @Override
+    public List<WorkoutExerciseEntity> getExercises(UUID workoutId) {
+        return em.createQuery(
+                "SELECT e FROM WorkoutExerciseEntity e WHERE e.workout.id = :workoutId",
+                WorkoutExerciseEntity.class)
+                .setParameter("workoutId", workoutId)
+                .getResultList();
+    }
+
+    @Transactional
+    @Override
+    public void removeExercise(UUID exerciseId) {
+        var ex = em.find(WorkoutExerciseEntity.class, exerciseId);
+        if (ex == null) {
+            throw new IllegalArgumentException("Exercise not found: " + exerciseId);
+        }
+        em.remove(ex); 
+        em.flush();
+    }
 }

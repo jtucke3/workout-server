@@ -3,9 +3,8 @@ package com.jtucke3.workoutapi.service.workout.exercise.external;
 import org.springframework.stereotype.Service;
 
 import com.jtucke3.workoutapi.dto.workout.exercise.AddSetRequestDTO;
-import com.jtucke3.workoutapi.dto.workout.exercise.AddSetResponseDTO;
+import com.jtucke3.workoutapi.dto.workout.exercise.ExerciseResponseDTO;
 import com.jtucke3.workoutapi.dto.workout.exercise.RemoveSetRequestDTO;
-import com.jtucke3.workoutapi.dto.workout.exercise.RemoveSetResponseDTO;
 import com.jtucke3.workoutapi.service.workout.exercise.internal.IWorkoutExerciseInternalService;
 
 import lombok.RequiredArgsConstructor;
@@ -17,12 +16,12 @@ public class WorkoutExerciseExternalService implements IWorkoutExerciseExternalS
     private final IWorkoutExerciseInternalService internal;
 
     @Override
-    public AddSetResponseDTO addSet(AddSetRequestDTO req) {
-        return internal.addSet(req);
+    public ExerciseResponseDTO addSet(AddSetRequestDTO req) {
+        return internal.addSet(req);  // ✅ returns updated ExerciseResponseDTO
     }
 
     @Override
-    public RemoveSetResponseDTO removeSet(RemoveSetRequestDTO req) {
-        return internal.removeSet(req);
+    public ExerciseResponseDTO removeSet(RemoveSetRequestDTO req) {
+        return internal.removeSet(req);  // ✅ returns updated ExerciseResponseDTO
     }
 }

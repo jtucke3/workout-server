@@ -1,5 +1,5 @@
 package com.jtucke3.workoutapi.webVo.workout.exercise;
 
-public class AddSetWebVo {
+public class AddSetRequestWebVo {
     // intentionally blank – just a marker object
 }
