@@ -29,4 +29,10 @@ public interface IWorkoutDao {
 
     // --- New method: get all workouts for a user ---
     List<WorkoutEntity> findWorkoutsByUserId(UUID userId);
+
+    // --- New method: update an existing workout ---
+    WorkoutEntity updateWorkout(UUID workoutId,
+                                String title,
+                                LocalDateTime workoutAt,
+                                String notes);
 }

@@ -11,6 +11,7 @@ import com.jtucke3.workoutapi.domain.entity.WorkoutEntity;
 import com.jtucke3.workoutapi.dto.workout.workout.AddExerciseRequestDTO;
 import com.jtucke3.workoutapi.dto.workout.workout.CreateWorkoutRequestDTO;
 import com.jtucke3.workoutapi.dto.workout.workout.RemoveExerciseRequestDTO;
+import com.jtucke3.workoutapi.dto.workout.workout.UpdateWorkoutRequestDTO;
 import com.jtucke3.workoutapi.dto.workout.workout.WorkoutResponseDTO;
 import com.jtucke3.workoutapi.mappers.workout.workout.WorkoutMapper;
 
@@ -57,7 +58,21 @@ public class WorkoutInternalService implements IWorkoutInternalService {
         return WorkoutMapper.toDTO(workout);
     }
 
-    // --- New methods to match interface ---
+    @Transactional
+    @Override
+    public WorkoutResponseDTO updateWorkout(UpdateWorkoutRequestDTO req) {
+        var workout = workoutDao.findWorkoutById(req.getWorkoutId())
+                .orElseThrow(() -> new IllegalArgumentException("Workout not found"));
+
+        if (workout.getStatus() != WorkoutEntity.Status.IN_PROGRESS) {
+            throw new IllegalStateException("Cannot update a non in-progress workout");
+        }
+
+        var updated = workoutDao.updateWorkout(req.getWorkoutId(), req.getTitle(), req.getWorkoutAt(), req.getNotes());
+        return WorkoutMapper.toDTO(updated);
+    }
+
+    // --- Retrieval methods ---
 
     @Transactional(readOnly = true)
     @Override

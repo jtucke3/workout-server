@@ -98,4 +98,30 @@ public class WorkoutDao implements IWorkoutDao {
                 .setParameter("userId", userId)
                 .getResultList();
     }
+
+    @Transactional
+    @Override
+    public WorkoutEntity updateWorkout(UUID workoutId,
+                                       String title,
+                                       LocalDateTime workoutAt,
+                                       String notes) {
+        var workout = em.find(WorkoutEntity.class, workoutId);
+        if (workout == null) {
+            throw new IllegalArgumentException("Workout not found: " + workoutId);
+        }
+
+        // Update mutable fields
+        if (title != null && !title.isBlank()) {
+            workout.setTitle(title);
+        }
+        if (workoutAt != null) {
+            workout.setWorkoutAt(workoutAt);
+        }
+        if (notes != null) {
+            workout.setNotes(notes);
+        }
+
+        // Merge ensures changes are persisted
+        return em.merge(workout);
+    }
 }

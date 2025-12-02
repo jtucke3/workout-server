@@ -6,6 +6,7 @@ import java.util.UUID;
 import com.jtucke3.workoutapi.dto.workout.workout.AddExerciseRequestDTO;
 import com.jtucke3.workoutapi.dto.workout.workout.CreateWorkoutRequestDTO;
 import com.jtucke3.workoutapi.dto.workout.workout.RemoveExerciseRequestDTO;
+import com.jtucke3.workoutapi.dto.workout.workout.UpdateWorkoutRequestDTO;
 import com.jtucke3.workoutapi.dto.workout.workout.WorkoutResponseDTO;
 
 /**
@@ -20,6 +21,8 @@ public interface IWorkoutInternalService {
     WorkoutResponseDTO addExercise(AddExerciseRequestDTO req);
 
     WorkoutResponseDTO removeExercise(RemoveExerciseRequestDTO req);
+
+    WorkoutResponseDTO updateWorkout(UpdateWorkoutRequestDTO req); // <-- new
 
     // --- Retrieval operations ---
     /**

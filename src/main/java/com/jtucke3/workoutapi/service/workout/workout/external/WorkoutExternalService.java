@@ -10,6 +10,7 @@ import com.jtucke3.workoutapi.dto.workout.workout.CreateWorkoutRequestDTO;
 import com.jtucke3.workoutapi.dto.workout.workout.GetWorkoutRequestDTO;
 import com.jtucke3.workoutapi.dto.workout.workout.GetWorkoutsRequestDTO;
 import com.jtucke3.workoutapi.dto.workout.workout.RemoveExerciseRequestDTO;
+import com.jtucke3.workoutapi.dto.workout.workout.UpdateWorkoutRequestDTO;
 import com.jtucke3.workoutapi.dto.workout.workout.WorkoutResponseDTO;
 import com.jtucke3.workoutapi.service.workout.workout.internal.IWorkoutInternalService;
 
@@ -33,6 +34,11 @@ public class WorkoutExternalService implements IWorkoutExternalService {
     @Override
     public WorkoutResponseDTO removeExercise(RemoveExerciseRequestDTO req) {
         return internal.removeExercise(req);
+    }
+
+    @Override
+    public WorkoutResponseDTO updateWorkout(UpdateWorkoutRequestDTO req) {
+        return internal.updateWorkout(req);
     }
 
     @Override

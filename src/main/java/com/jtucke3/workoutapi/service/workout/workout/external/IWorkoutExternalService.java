@@ -8,6 +8,7 @@ import com.jtucke3.workoutapi.dto.workout.workout.CreateWorkoutRequestDTO;
 import com.jtucke3.workoutapi.dto.workout.workout.GetWorkoutRequestDTO;
 import com.jtucke3.workoutapi.dto.workout.workout.GetWorkoutsRequestDTO;
 import com.jtucke3.workoutapi.dto.workout.workout.RemoveExerciseRequestDTO;
+import com.jtucke3.workoutapi.dto.workout.workout.UpdateWorkoutRequestDTO;
 import com.jtucke3.workoutapi.dto.workout.workout.WorkoutResponseDTO;
 
 /**
@@ -20,6 +21,7 @@ public interface IWorkoutExternalService {
     WorkoutResponseDTO create(CreateWorkoutRequestDTO req);
     WorkoutResponseDTO addExercise(AddExerciseRequestDTO req);
     WorkoutResponseDTO removeExercise(RemoveExerciseRequestDTO req);
+    WorkoutResponseDTO updateWorkout(UpdateWorkoutRequestDTO req); // <-- new
 
     // --- Retrieval operations ---
     List<WorkoutResponseDTO> getWorkouts(GetWorkoutsRequestDTO req);

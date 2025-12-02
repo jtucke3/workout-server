@@ -9,12 +9,15 @@ import com.jtucke3.workoutapi.dto.workout.workout.AddExerciseRequestDTO;
 import com.jtucke3.workoutapi.dto.workout.workout.CreateWorkoutRequestDTO;
 import com.jtucke3.workoutapi.dto.workout.workout.GetWorkoutRequestDTO;
 import com.jtucke3.workoutapi.dto.workout.workout.GetWorkoutsRequestDTO;
+import com.jtucke3.workoutapi.dto.workout.workout.UpdateWorkoutRequestDTO;
 import com.jtucke3.workoutapi.dto.workout.workout.WorkoutResponseDTO;
 import com.jtucke3.workoutapi.webVo.workout.workout.AddExerciseRequestWebVo;
 import com.jtucke3.workoutapi.webVo.workout.workout.CreateWorkoutRequestWebVo;
 import com.jtucke3.workoutapi.webVo.workout.workout.GetWorkoutRequestWebVo;
 import com.jtucke3.workoutapi.webVo.workout.workout.GetWorkoutsRequestWebVo;
+import com.jtucke3.workoutapi.webVo.workout.workout.UpdateWorkoutRequestWebVo;
 import com.jtucke3.workoutapi.webVo.workout.workout.WorkoutResponseWebVo;
+
 /**
  * Converter between WebVo and DTO for workout operations.
  */
@@ -48,6 +51,13 @@ public class WorkoutConv {
     public static GetWorkoutsRequestDTO toGetWorkoutsDTO(GetWorkoutsRequestWebVo webVo) {
         if (webVo == null) throw new IllegalArgumentException("Missing request body");
         return new GetWorkoutsRequestDTO(webVo.getUserId());
+    }
+
+    public static UpdateWorkoutRequestDTO toUpdateWorkoutDTO(UpdateWorkoutRequestWebVo webVo) {
+        if (webVo == null) throw new IllegalArgumentException("Missing request body");
+        var title = (webVo.getTitle() == null || webVo.getTitle().isBlank())
+                ? "Untitled Workout" : webVo.getTitle().trim();
+        return new UpdateWorkoutRequestDTO(webVo.getWorkoutId(), title, webVo.getWorkoutAt(), webVo.getNotes());
     }
 
     // --- DTO → WebVo ---
