@@ -65,6 +65,7 @@ public class WorkoutDao implements IWorkoutDao {
         ex.setEquipment(equipment);
 
         em.persist(ex);
+        em.flush();
         return ex;
     }
 
@@ -86,6 +87,7 @@ public class WorkoutDao implements IWorkoutDao {
             throw new IllegalArgumentException("Exercise not found: " + exerciseId);
         }
         em.remove(ex);
+        em.flush();
     }
 
     // --- New method: get all workouts for a user ---

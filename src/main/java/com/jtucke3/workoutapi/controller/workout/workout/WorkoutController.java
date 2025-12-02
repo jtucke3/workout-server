@@ -3,6 +3,7 @@ package com.jtucke3.workoutapi.controller.workout.workout;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +18,7 @@ import com.jtucke3.workoutapi.dto.workout.workout.AddExerciseRequestDTO;
 import com.jtucke3.workoutapi.dto.workout.workout.CreateWorkoutRequestDTO;
 import com.jtucke3.workoutapi.dto.workout.workout.GetWorkoutRequestDTO;
 import com.jtucke3.workoutapi.dto.workout.workout.GetWorkoutsRequestDTO;
+import com.jtucke3.workoutapi.dto.workout.workout.RemoveExerciseRequestDTO;
 import com.jtucke3.workoutapi.dto.workout.workout.UpdateWorkoutRequestDTO;
 import com.jtucke3.workoutapi.dto.workout.workout.WorkoutResponseDTO;
 import com.jtucke3.workoutapi.service.workout.workout.external.IWorkoutExternalService;
@@ -57,6 +59,14 @@ public class WorkoutController {
         return WorkoutConv.toResponseWebVo(responseDto);
     }
 
+    @DeleteMapping("/{workoutId}/exercises/{exerciseId}")
+    public WorkoutResponseWebVo removeExercise(@PathVariable("workoutId") UUID workoutId,
+                                               @PathVariable("exerciseId") UUID exerciseId) {
+        RemoveExerciseRequestDTO dto = new RemoveExerciseRequestDTO(workoutId, exerciseId);
+        WorkoutResponseDTO responseDto = service.removeExercise(dto);
+        return WorkoutConv.toResponseWebVo(responseDto);
+    }
+
     /**
      * Update an existing workout.
      */
@@ -92,4 +102,6 @@ public class WorkoutController {
         WorkoutResponseDTO responseDto = service.getWorkout(dto);
         return WorkoutConv.toResponseWebVo(responseDto);
     }
+
+    
 }

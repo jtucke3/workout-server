@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.jtucke3.workoutapi.dao.workout.IWorkoutDao;
 import com.jtucke3.workoutapi.domain.entity.WorkoutEntity;
+import com.jtucke3.workoutapi.domain.entity.WorkoutExerciseEntity;
 import com.jtucke3.workoutapi.dto.workout.workout.AddExerciseRequestDTO;
 import com.jtucke3.workoutapi.dto.workout.workout.CreateWorkoutRequestDTO;
 import com.jtucke3.workoutapi.dto.workout.workout.RemoveExerciseRequestDTO;
@@ -40,8 +41,8 @@ public class WorkoutInternalService implements IWorkoutInternalService {
             throw new IllegalStateException("Cannot modify a non in-progress workout");
         }
 
-        workoutDao.addExercise(workout, req.name(), req.notes(), req.bodyPart(), req.equipment());
-        return WorkoutMapper.toDTO(workout);
+        WorkoutExerciseEntity e = workoutDao.addExercise(workout, req.name(), req.notes(), req.bodyPart(), req.equipment());
+        return WorkoutMapper.toDTO(e.getWorkout());
     }
 
     @Transactional
