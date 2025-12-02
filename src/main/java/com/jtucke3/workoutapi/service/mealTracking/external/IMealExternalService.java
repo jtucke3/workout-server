@@ -16,7 +16,7 @@ public interface IMealExternalService {
 
     MealResponseDTO getMealById(UUID mealId);
 
-    List<MealResponseDTO> getMealsByUser(UUID userId);
+    List<MealResponseDTO> getMealsByEmail(String userEmail);
 
     void deleteMeal(UUID mealId);
 }

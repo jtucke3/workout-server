@@ -2,7 +2,7 @@ package com.jtucke3.workoutapi.webVo.workout.workout;
 
 import java.time.LocalDateTime;
 
-public class CreateWorkoutWebVo {
+public class CreateWorkoutRequestWebVo {
     private String title;
     private LocalDateTime workoutAt;
     private String notes;

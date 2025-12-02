@@ -1,6 +1,7 @@
 package com.jtucke3.workoutapi.dao.workout;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -8,12 +9,21 @@ import com.jtucke3.workoutapi.domain.entity.WorkoutEntity;
 import com.jtucke3.workoutapi.domain.entity.WorkoutExerciseEntity;
 
 public interface IWorkoutDao {
-    WorkoutEntity createWorkout(UUID userId, String title, LocalDateTime workoutAt, String notes);
+
+    WorkoutEntity createWorkout(UUID userId,
+                                String title,
+                                LocalDateTime workoutAt,
+                                String notes);
+
     Optional<WorkoutEntity> findWorkoutById(UUID workoutId);
 
     WorkoutExerciseEntity addExercise(WorkoutEntity workout,
                                       String name,
                                       String notes,
-                                      Integer position,
-                                      UUID catalogId);
+                                      String bodyPart,
+                                      String equipment);
+
+    List<WorkoutExerciseEntity> getExercises(UUID workoutId);
+
+    void removeExercise(UUID exerciseId);
 }

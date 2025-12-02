@@ -55,6 +55,17 @@ public class WorkoutExerciseDao implements IWorkoutExerciseDao {
         return set;
     }
 
+    @Override
+    public List<WorkoutSetEntity> getSets(UUID exerciseId) {
+        return em.createQuery("""
+            SELECT s FROM WorkoutSetEntity s
+            WHERE s.exercise.id = :exerciseId
+            ORDER BY s.createdAt ASC
+        """, WorkoutSetEntity.class)
+        .setParameter("exerciseId", exerciseId)
+        .getResultList();
+    }
+
     @Transactional
     @Override
     public void removeSet(UUID setId) {
@@ -62,7 +73,11 @@ public class WorkoutExerciseDao implements IWorkoutExerciseDao {
         if (set == null) {
             throw new IllegalArgumentException("Set not found: " + setId);
         }
-
         em.remove(set);
+    }
+
+    @Override
+    public Optional<WorkoutSetEntity> findSetById(UUID setId) {
+        return Optional.ofNullable(em.find(WorkoutSetEntity.class, setId));
     }
 }

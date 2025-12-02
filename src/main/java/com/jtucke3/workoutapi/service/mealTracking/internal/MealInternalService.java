@@ -24,7 +24,7 @@ public class MealInternalService implements IMealInternalService {
     @Override
     public MealResponseDTO createMeal(CreateMealRequestDTO req) {
         var meal = mealDao.createMeal(
-                req.userId(),
+                req.userEmail(),
                 req.name(),
                 req.calories(),
                 req.mealAtUtc(),
@@ -58,8 +58,8 @@ public class MealInternalService implements IMealInternalService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<MealResponseDTO> findByUserId(UUID userId) {
-        return mealDao.findByUserId(userId).stream()
+    public List<MealResponseDTO> findByUserEmail(String userEmail) {
+        return mealDao.findByUserEmail(userEmail).stream()
                 .map(this::toResponse)
                 .toList();
     }
@@ -67,14 +67,14 @@ public class MealInternalService implements IMealInternalService {
     @Transactional
     @Override
     public void deleteMeal(UUID mealId) {
-        mealDao.deleteMeal(mealId); // ✅ delegate to DAO
+        mealDao.deleteMeal(mealId); // delegate to DAO
     }
 
     // --- Mapping helper ---
     private MealResponseDTO toResponse(MealEntity meal) {
         return new MealResponseDTO(
                 meal.getId(),
-                meal.getUser().getId(),
+                meal.getUser().getEmail(),
                 meal.getName(),
                 meal.getCalories(),
                 meal.getMealAtUtc(),
