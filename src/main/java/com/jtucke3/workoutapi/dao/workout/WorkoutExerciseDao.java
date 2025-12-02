@@ -30,7 +30,7 @@ public class WorkoutExerciseDao implements IWorkoutExerciseDao {
         return em.createQuery("""
             SELECT e FROM WorkoutExerciseEntity e
             WHERE e.workout.id = :workoutId
-            ORDER BY e.position ASC
+            ORDER BY e.createdAt ASC
         """, WorkoutExerciseEntity.class)
         .setParameter("workoutId", workoutId)
         .getResultList();

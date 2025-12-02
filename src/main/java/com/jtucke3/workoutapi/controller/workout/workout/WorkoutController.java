@@ -41,9 +41,9 @@ public class WorkoutController {
     }
 
     /**
-     * Add an exercise to a workout. Supports either a catalogId (preset) or custom name.
-     * The workoutId comes from the path; other fields come from the WebVo body.
-     */
+    * Add an exercise to a workout. Supports either a catalogId (preset) or custom name.
+    * The workoutId comes from the path; other fields come from the WebVo body.
+    */
     @PostMapping("/{workoutId}/exercises")
     public WorkoutResponseWebVo addExercise(@PathVariable("workoutId") UUID workoutId,
                                             @RequestBody AddExerciseRequestWebVo webVo) {

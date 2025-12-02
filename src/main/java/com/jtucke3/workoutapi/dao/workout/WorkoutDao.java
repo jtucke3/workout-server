@@ -42,6 +42,7 @@ public class WorkoutDao implements IWorkoutDao {
     }
 
     @Override
+
     public Optional<WorkoutEntity> findWorkoutById(UUID workoutId) {
         return Optional.ofNullable(em.find(WorkoutEntity.class, workoutId));
     }
@@ -49,10 +50,10 @@ public class WorkoutDao implements IWorkoutDao {
     @Transactional
     @Override
     public WorkoutExerciseEntity addExercise(WorkoutEntity workout,
-                                             String name,
-                                             String notes,
-                                             String bodyPart,
-                                             String equipment) {
+            String name,
+            String notes,
+            String bodyPart,
+            String equipment) {
         if (name == null || name.isBlank()) {
             throw new IllegalArgumentException("Exercise name is required");
         }
@@ -85,7 +86,7 @@ public class WorkoutDao implements IWorkoutDao {
         if (ex == null) {
             throw new IllegalArgumentException("Exercise not found: " + exerciseId);
         }
-        em.remove(ex); 
+        em.remove(ex);
         em.flush();
     }
 }
