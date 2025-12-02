@@ -15,7 +15,7 @@ public class MealConv {
     // --- WebVO → DTO ---
     public static CreateMealRequestDTO toDto(CreateMealRequestWebVo vo) {
         return new CreateMealRequestDTO(
-                vo.userId(),
+                vo.userEmail(),
                 vo.name(),
                 vo.calories(),
                 vo.mealAtUtc(),
@@ -37,7 +37,7 @@ public class MealConv {
     public static MealResponseWebVo toWebVo(MealResponseDTO dto) {
         return new MealResponseWebVo(
                 dto.id(),
-                dto.userId(),
+                dto.userEmail(),
                 dto.name(),
                 dto.calories(),
                 dto.mealAtUtc(),

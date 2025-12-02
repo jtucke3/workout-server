@@ -30,7 +30,7 @@ public class MealController {
     private final IMealExternalService mealService;
 
     // --- Create ---
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<MealResponseWebVo> createMeal(@RequestBody CreateMealRequestWebVo vo) {
         MealResponseDTO dto = mealService.createMeal(MealConv.toDto(vo));
         return ResponseEntity.ok(MealConv.toWebVo(dto));
@@ -61,9 +61,9 @@ public class MealController {
     }
 
     // --- Get by User ---
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<MealResponseWebVo>> getMealsByUser(@PathVariable UUID userId) {
-        List<MealResponseDTO> dtos = mealService.getMealsByUser(userId);
+    @GetMapping("/user/{userEmail}")
+    public ResponseEntity<List<MealResponseWebVo>> getMealsByUser(@PathVariable String userEmail) {
+        List<MealResponseDTO> dtos = mealService.getMealsByEmail(userEmail);
         return ResponseEntity.ok(
                 dtos.stream().map(MealConv::toWebVo).toList()
         );

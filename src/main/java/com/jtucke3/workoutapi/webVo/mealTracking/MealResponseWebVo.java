@@ -5,7 +5,7 @@ import java.util.UUID;
 
 public record MealResponseWebVo(
     UUID id,
-    UUID userId,
+    String userEmail,
     String name,
     int calories,
     Instant mealAtUtc,
