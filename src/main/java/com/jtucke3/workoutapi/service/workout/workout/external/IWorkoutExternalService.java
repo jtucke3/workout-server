@@ -21,7 +21,13 @@ public interface IWorkoutExternalService {
     WorkoutResponseDTO create(CreateWorkoutRequestDTO req);
     WorkoutResponseDTO addExercise(AddExerciseRequestDTO req);
     WorkoutResponseDTO removeExercise(RemoveExerciseRequestDTO req);
-    WorkoutResponseDTO updateWorkout(UpdateWorkoutRequestDTO req); // <-- new
+    WorkoutResponseDTO updateWorkout(UpdateWorkoutRequestDTO req);
+
+    /**
+     * Remove a workout by its ID.
+     * Returns void so the controller can decide the proper HTTP response (204 No Content, 404, etc.).
+     */
+    void removeWorkout(UUID workoutId);
 
     // --- Retrieval operations ---
     List<WorkoutResponseDTO> getWorkouts(GetWorkoutsRequestDTO req);

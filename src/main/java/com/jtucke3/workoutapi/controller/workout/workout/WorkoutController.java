@@ -3,6 +3,7 @@ package com.jtucke3.workoutapi.controller.workout.workout;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -48,6 +49,12 @@ public class WorkoutController {
         return WorkoutConv.toResponseWebVo(responseDto);
     }
 
+    @DeleteMapping("/{workoutId}")
+    public ResponseEntity<Void> remove(@PathVariable UUID workoutId) {
+        service.removeWorkout(workoutId);
+        return ResponseEntity.noContent().build(); // 204 No Content
+    }
+
     /**
      * Add an exercise to a workout.
      */
@@ -61,7 +68,7 @@ public class WorkoutController {
 
     @DeleteMapping("/{workoutId}/exercises/{exerciseId}")
     public WorkoutResponseWebVo removeExercise(@PathVariable("workoutId") UUID workoutId,
-                                               @PathVariable("exerciseId") UUID exerciseId) {
+            @PathVariable("exerciseId") UUID exerciseId) {
         RemoveExerciseRequestDTO dto = new RemoveExerciseRequestDTO(workoutId, exerciseId);
         WorkoutResponseDTO responseDto = service.removeExercise(dto);
         return WorkoutConv.toResponseWebVo(responseDto);
@@ -103,5 +110,4 @@ public class WorkoutController {
         return WorkoutConv.toResponseWebVo(responseDto);
     }
 
-    
 }

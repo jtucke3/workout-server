@@ -73,8 +73,21 @@ public class WorkoutInternalService implements IWorkoutInternalService {
         return WorkoutMapper.toDTO(updated);
     }
 
-    // --- Retrieval methods ---
+    // --- New method: remove a workout ---
+    @Transactional
+    @Override
+    public void removeWorkout(UUID workoutId) {
+        var workout = workoutDao.findWorkoutById(workoutId)
+                .orElseThrow(() -> new IllegalArgumentException("Workout not found"));
 
+        if (workout.getStatus() != WorkoutEntity.Status.IN_PROGRESS) {
+            throw new IllegalStateException("Cannot remove a non in-progress workout");
+        }
+
+        workoutDao.removeWorkout(workoutId);
+    }
+
+    // --- Retrieval methods ---
     @Transactional(readOnly = true)
     @Override
     public List<WorkoutResponseDTO> findByUserId(UUID userId) {

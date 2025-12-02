@@ -87,6 +87,7 @@ public class MealController {
     @DeleteMapping("/{mealId}")
     public ResponseEntity<Void> deleteMeal(@PathVariable UUID mealId) {
         mealService.deleteMeal(mealId);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.noContent().build(); // 204 No Content
     }
+
 }
