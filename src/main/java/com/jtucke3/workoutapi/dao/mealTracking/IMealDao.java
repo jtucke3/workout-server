@@ -12,12 +12,12 @@ public interface IMealDao {
     // --- Queries ---
     Optional<MealEntity> findById(UUID mealId);
 
-    List<MealEntity> findByUserId(UUID userId);
+    List<MealEntity> findByUserEmail(String userEmail);
 
     // --- Persistence ---
     MealEntity saveMeal(MealEntity meal);  // update existing or persist new
 
-    MealEntity createMeal(UUID userId, String name, int calories, Instant mealAtUtc, String notes);
+    MealEntity createMeal(String userEmail, String name, int calories, Instant mealAtUtc, String notes);
 
     void deleteMeal(UUID mealId);          // hard delete by ID
 }

@@ -39,8 +39,8 @@ public class MealExternalService implements IMealExternalService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<MealResponseDTO> getMealsByUser(UUID userId) {
-        return internal.findByUserId(userId);
+    public List<MealResponseDTO> getMealsByEmail(String userEmail) {
+        return internal.findByUserEmail(userEmail);
     }
 
     @Transactional

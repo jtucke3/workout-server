@@ -4,7 +4,7 @@ import java.time.Instant;
 import java.util.UUID;
 
 public record CreateMealRequestWebVo(
-    UUID userId,
+    String userEmail,
     String name,
     int calories,
     Instant mealAtUtc,
