@@ -15,6 +15,9 @@ public interface IWorkoutDao {
                                 LocalDateTime workoutAt,
                                 String notes);
 
+    void removeWorkout(UUID workoutId);
+
+
     Optional<WorkoutEntity> findWorkoutById(UUID workoutId);
 
     WorkoutExerciseEntity addExercise(WorkoutEntity workout,

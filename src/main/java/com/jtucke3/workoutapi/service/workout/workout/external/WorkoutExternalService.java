@@ -42,6 +42,11 @@ public class WorkoutExternalService implements IWorkoutExternalService {
     }
 
     @Override
+    public void removeWorkout(UUID workoutId) {
+        internal.removeWorkout(workoutId);
+    }
+
+    @Override
     public List<WorkoutResponseDTO> getWorkouts(GetWorkoutsRequestDTO req) {
         return internal.findByUserId(req.getUserId());
     }
