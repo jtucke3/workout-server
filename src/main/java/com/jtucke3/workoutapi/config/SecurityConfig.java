@@ -22,7 +22,8 @@ public class SecurityConfig {
                                 "/api/auth/**",
                                 "/api/workouts/**",
                                 "/api/exercises/**",
-                                "/api/meals/**").permitAll()
+                                "/api/meals/**",
+                                "/api/friends/**" ).permitAll()
                         .anyRequest().authenticated()
                 )
 
