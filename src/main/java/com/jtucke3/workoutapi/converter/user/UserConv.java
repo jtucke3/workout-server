@@ -15,7 +15,7 @@ public class UserConv {
     public UserDTO toDto(UserEntity e) {
         // UserDTO expects: (id, email, username, displayName).
         // username is not present on older entities — pass null for now.
-        return new UserDTO(e.getId(), e.getEmail(), null, e.getDisplayName());
+        return new UserDTO(e.getId(), e.getEmail(), null, e.getDisplayName(), e.isProfilePrivate());
     }
 
     public static ChangePasswordRequestDTO changePasswordReuquestToDTO(UUID userId, ChangePasswordWebRequestVo vo) {
