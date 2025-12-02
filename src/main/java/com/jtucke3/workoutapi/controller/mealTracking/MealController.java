@@ -47,7 +47,7 @@ public class MealController {
     }
 
     // --- Update ---
-    @PutMapping("/{mealId}")
+    @PutMapping("{mealId}")
     public ResponseEntity<MealResponseWebVo> updateMeal(
             @PathVariable UUID userId,
             @PathVariable UUID mealId,
