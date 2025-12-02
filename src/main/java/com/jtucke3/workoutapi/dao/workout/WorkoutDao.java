@@ -40,6 +40,17 @@ public class WorkoutDao implements IWorkoutDao {
         return w;
     }
 
+    @Transactional
+    @Override
+    public void removeWorkout(UUID workoutId) {
+        var workout = em.find(WorkoutEntity.class, workoutId);
+        if (workout == null) {
+            throw new IllegalArgumentException("Workout not found: " + workoutId);
+        }
+        em.remove(workout);
+        em.flush();
+    }
+
     @Transactional(readOnly = true)
     @Override
     public Optional<WorkoutEntity> findWorkoutById(UUID workoutId) {
@@ -49,10 +60,10 @@ public class WorkoutDao implements IWorkoutDao {
     @Transactional
     @Override
     public WorkoutExerciseEntity addExercise(WorkoutEntity workout,
-                                             String name,
-                                             String notes,
-                                             String bodyPart,
-                                             String equipment) {
+            String name,
+            String notes,
+            String bodyPart,
+            String equipment) {
         if (name == null || name.isBlank()) {
             throw new IllegalArgumentException("Exercise name is required");
         }
@@ -104,9 +115,9 @@ public class WorkoutDao implements IWorkoutDao {
     @Transactional
     @Override
     public WorkoutEntity updateWorkout(UUID workoutId,
-                                       String title,
-                                       LocalDateTime workoutAt,
-                                       String notes) {
+            String title,
+            LocalDateTime workoutAt,
+            String notes) {
         var workout = em.find(WorkoutEntity.class, workoutId);
         if (workout == null) {
             throw new IllegalArgumentException("Workout not found: " + workoutId);

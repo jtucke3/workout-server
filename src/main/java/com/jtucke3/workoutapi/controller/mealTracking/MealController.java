@@ -85,13 +85,9 @@ public class MealController {
 
     // --- Delete ---
     @DeleteMapping("/{mealId}")
-    public ResponseEntity<List<MealResponseWebVo>> deleteMeal(
-        @PathVariable UUID userId,
-        @PathVariable UUID mealId) {
+    public ResponseEntity<Void> deleteMeal(@PathVariable UUID mealId) {
         mealService.deleteMeal(mealId);
-        List<MealResponseDTO> dtos = mealService.getMealsByUserId(userId);
-        return ResponseEntity.ok(
-                dtos.stream().map(MealConv::toWebVo).toList()
-        );
+        return ResponseEntity.noContent().build(); // 204 No Content
     }
+
 }

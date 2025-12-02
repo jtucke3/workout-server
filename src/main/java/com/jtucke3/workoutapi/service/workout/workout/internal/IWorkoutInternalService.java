@@ -22,7 +22,13 @@ public interface IWorkoutInternalService {
 
     WorkoutResponseDTO removeExercise(RemoveExerciseRequestDTO req);
 
-    WorkoutResponseDTO updateWorkout(UpdateWorkoutRequestDTO req); // <-- new
+    WorkoutResponseDTO updateWorkout(UpdateWorkoutRequestDTO req);
+
+    /**
+     * Remove a workout by its ID.
+     * Returns void for clarity — controller decides response (204 No Content or error).
+     */
+    void removeWorkout(UUID workoutId);
 
     // --- Retrieval operations ---
     /**
