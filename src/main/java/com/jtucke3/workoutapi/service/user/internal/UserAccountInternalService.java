@@ -9,6 +9,7 @@ import com.jtucke3.workoutapi.dto.user.UserDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import java.util.UUID;
 
 @Service
@@ -22,14 +23,15 @@ public class UserAccountInternalService implements IUserAccountInternalService {
     @Override
     public UserDTO changePassword(ChangePasswordRequestDTO request) {
         UserEntity user = dao.findById(request.userId())
-            .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
+        // ✅ Use passwordHash instead of password
         if (!passwordEncoder.matches(request.currentPassword(), user.getPasswordHash())) {
             throw new IllegalArgumentException("Current password is incorrect");
         }
 
-        String newHash = passwordEncoder.encode(request.newPassword());
-        user.setPasswordHash(newHash);
+        // ✅ Store encoded password in passwordHash
+        user.setPasswordHash(passwordEncoder.encode(request.newPassword()));
         dao.save(user);
 
         return conv.toDto(user);
@@ -38,14 +40,15 @@ public class UserAccountInternalService implements IUserAccountInternalService {
     @Override
     public UserDTO updateProfile(UUID userId, UserProfileWVO wvo) {
         UserEntity user = dao.findById(userId)
-            .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
+        // Make sure these fields exist on UserEntity (they do in what you sent)
         user.setUsername(wvo.getUsername());
         user.setEmail(wvo.getEmail());
+        user.setProfilePrivate(wvo.isProfilePrivate());
 
         dao.save(user);
 
         return conv.toDto(user);
     }
-
 }

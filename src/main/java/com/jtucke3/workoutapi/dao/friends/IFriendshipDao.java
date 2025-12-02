@@ -25,7 +25,7 @@ public interface IFriendshipDao {
     List<UserEntity> findAcceptedFriends(UUID userId);
 
     /**
-     * Persist or merge a friendship entity.
+     * Persist or merge a friendship.
      */
     FriendshipEntity save(FriendshipEntity entity);
 
@@ -40,4 +40,9 @@ public interface IFriendshipDao {
      *       choose how to represent those.
      */
     List<UserEntity> searchUsers(String query, UUID excludeUserId);
+
+    /**
+     * Users who have sent a PENDING request to the given current user.
+     */
+    List<UserEntity> findIncomingRequests(UUID currentUserId);
 }

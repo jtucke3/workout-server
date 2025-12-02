@@ -101,4 +101,18 @@ public class FriendshipDao implements IFriendshipDao {
         q.setParameter("q", like);
         return q.getResultList();
     }
+
+    @Override
+    public List<UserEntity> findIncomingRequests(UUID currentUserId) {
+        TypedQuery<UserEntity> q = em.createQuery(
+                "select f.user from FriendshipEntity f " +
+                        "where f.friend.id = :current " +
+                        "and f.status = :status " +
+                        "order by f.user.displayName asc",
+                UserEntity.class
+        );
+        q.setParameter("current", currentUserId);
+        q.setParameter("status", FriendshipStatus.PENDING);
+        return q.getResultList();
+    }
 }

@@ -4,6 +4,7 @@ import com.jtucke3.workoutapi.converter.friends.FriendConv;
 import com.jtucke3.workoutapi.service.friends.external.IFriendExternalService;
 import com.jtucke3.workoutapi.webVo.friends.FriendActivityWebVo;
 import com.jtucke3.workoutapi.webVo.friends.FriendPreviewWebVo;
+import com.jtucke3.workoutapi.webVo.friends.FriendProfileWebVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,7 +44,19 @@ public class FriendsController {
     }
 
     /**
+     * List incoming friend requests (other users who have sent requests to this user).
+     */
+    @GetMapping("/incoming")
+    public List<FriendPreviewWebVo> incoming(
+            @RequestParam("userId") UUID userId
+    ) {
+        var dtos = service.listIncomingRequests(userId);
+        return conv.toWebVoList(dtos);
+    }
+
+    /**
      * Send a friend request to another user.
+     * For public accounts, this may auto-accept and create a mutual friendship.
      */
     @PostMapping("/request/{targetUserId}")
     public void sendRequest(
@@ -73,6 +86,18 @@ public class FriendsController {
             @PathVariable("friendId") UUID friendId
     ) {
         service.removeFriend(userId, friendId);
+    }
+
+    /**
+     * Friend profile: workouts/goals + privacy details.
+     */
+    @GetMapping("/profile/{friendId}")
+    public FriendProfileWebVo getFriendProfile(
+            @RequestParam("userId") UUID currentUserId,
+            @PathVariable("friendId") UUID friendId
+    ) {
+        var dto = service.getFriendProfile(currentUserId, friendId);
+        return conv.toProfileWebVo(dto);
     }
 
     /**

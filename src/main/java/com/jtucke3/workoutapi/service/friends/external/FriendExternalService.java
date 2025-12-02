@@ -2,6 +2,7 @@ package com.jtucke3.workoutapi.service.friends.external;
 
 import com.jtucke3.workoutapi.dto.friends.FriendActivityDTO;
 import com.jtucke3.workoutapi.dto.friends.FriendPreviewDTO;
+import com.jtucke3.workoutapi.dto.friends.FriendProfileDTO;
 import com.jtucke3.workoutapi.service.friends.internal.IFriendInternalService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,11 @@ public class FriendExternalService implements IFriendExternalService {
     }
 
     @Override
+    public List<FriendPreviewDTO> listIncomingRequests(UUID currentUserId) {
+        return internal.listIncomingRequests(currentUserId);
+    }
+
+    @Override
     public void sendFriendRequest(UUID currentUserId, UUID targetUserId) {
         internal.sendFriendRequest(currentUserId, targetUserId);
     }
@@ -43,5 +49,10 @@ public class FriendExternalService implements IFriendExternalService {
     @Override
     public List<FriendActivityDTO> recentActivity(UUID currentUserId) {
         return internal.recentActivity(currentUserId);
+    }
+
+    @Override
+    public FriendProfileDTO getFriendProfile(UUID currentUserId, UUID friendId) {
+        return internal.getFriendProfile(currentUserId, friendId);
     }
 }

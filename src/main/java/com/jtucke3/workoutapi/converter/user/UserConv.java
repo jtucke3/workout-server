@@ -13,9 +13,14 @@ import java.util.UUID;
 public class UserConv {
 
     public UserDTO toDto(UserEntity e) {
-        // UserDTO expects: (id, email, username, displayName).
-        // username is not present on older entities — pass null for now.
-        return new UserDTO(e.getId(), e.getEmail(), null, e.getDisplayName(), e.isProfilePrivate());
+        // (id, email, username, displayName, profilePrivate)
+        return new UserDTO(
+                e.getId(),
+                e.getEmail(),
+                e.getUsername(),
+                e.getDisplayName(),
+                e.isProfilePrivate()
+        );
     }
 
     public static ChangePasswordRequestDTO changePasswordReuquestToDTO(UUID userId, ChangePasswordWebRequestVo vo) {
@@ -23,7 +28,10 @@ public class UserConv {
     }
 
     public static UserProfileWVO userProfileWebRequestToWVO(UUID userId, UserProfileWVO webVo) {
-        return new UserProfileWVO(webVo.getUsername(), webVo.getEmail());
+        return new UserProfileWVO(
+                webVo.getUsername(),
+                webVo.getEmail(),
+                webVo.isProfilePrivate()
+        );
     }
-
 }
