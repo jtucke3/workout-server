@@ -37,12 +37,11 @@ public class WorkoutDao implements IWorkoutDao {
         w.setStatus(WorkoutEntity.Status.IN_PROGRESS);
 
         em.persist(w);
-        em.flush();
         return w;
     }
 
+    @Transactional(readOnly = true)
     @Override
-
     public Optional<WorkoutEntity> findWorkoutById(UUID workoutId) {
         return Optional.ofNullable(em.find(WorkoutEntity.class, workoutId));
     }
@@ -50,10 +49,10 @@ public class WorkoutDao implements IWorkoutDao {
     @Transactional
     @Override
     public WorkoutExerciseEntity addExercise(WorkoutEntity workout,
-            String name,
-            String notes,
-            String bodyPart,
-            String equipment) {
+                                             String name,
+                                             String notes,
+                                             String bodyPart,
+                                             String equipment) {
         if (name == null || name.isBlank()) {
             throw new IllegalArgumentException("Exercise name is required");
         }
@@ -66,10 +65,10 @@ public class WorkoutDao implements IWorkoutDao {
         ex.setEquipment(equipment);
 
         em.persist(ex);
-        em.flush();
         return ex;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<WorkoutExerciseEntity> getExercises(UUID workoutId) {
         return em.createQuery(
@@ -87,6 +86,16 @@ public class WorkoutDao implements IWorkoutDao {
             throw new IllegalArgumentException("Exercise not found: " + exerciseId);
         }
         em.remove(ex);
-        em.flush();
+    }
+
+    // --- New method: get all workouts for a user ---
+    @Transactional(readOnly = true)
+    @Override
+    public List<WorkoutEntity> findWorkoutsByUserId(UUID userId) {
+        return em.createQuery(
+                "SELECT w FROM WorkoutEntity w WHERE w.user.id = :userId ORDER BY w.workoutAt DESC",
+                WorkoutEntity.class)
+                .setParameter("userId", userId)
+                .getResultList();
     }
 }

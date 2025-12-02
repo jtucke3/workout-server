@@ -1,5 +1,8 @@
 package com.jtucke3.workoutapi.service.workout.workout.internal;
 
+import java.util.List;
+import java.util.UUID;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,6 +54,25 @@ public class WorkoutInternalService implements IWorkoutInternalService {
         }
 
         workoutDao.removeExercise(req.exerciseId());
+        return WorkoutMapper.toDTO(workout);
+    }
+
+    // --- New methods to match interface ---
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<WorkoutResponseDTO> findByUserId(UUID userId) {
+        var workouts = workoutDao.findWorkoutsByUserId(userId);
+        return workouts.stream()
+                       .map(WorkoutMapper::toDTO)
+                       .toList();
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public WorkoutResponseDTO findById(UUID workoutId) {
+        var workout = workoutDao.findWorkoutById(workoutId)
+                .orElseThrow(() -> new IllegalArgumentException("Workout not found"));
         return WorkoutMapper.toDTO(workout);
     }
 }

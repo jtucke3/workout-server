@@ -1,7 +1,9 @@
 package com.jtucke3.workoutapi.controller.workout.workout;
 
+import java.util.List;
 import java.util.UUID;
 
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.jtucke3.workoutapi.converter.workout.workout.WorkoutConv;
 import com.jtucke3.workoutapi.dto.workout.workout.AddExerciseRequestDTO;
 import com.jtucke3.workoutapi.dto.workout.workout.CreateWorkoutRequestDTO;
+import com.jtucke3.workoutapi.dto.workout.workout.GetWorkoutRequestDTO;
+import com.jtucke3.workoutapi.dto.workout.workout.GetWorkoutsRequestDTO;
 import com.jtucke3.workoutapi.dto.workout.workout.WorkoutResponseDTO;
 import com.jtucke3.workoutapi.service.workout.workout.external.IWorkoutExternalService;
 import com.jtucke3.workoutapi.webVo.workout.workout.AddExerciseRequestWebVo;
@@ -28,27 +32,50 @@ public class WorkoutController {
     private final IWorkoutExternalService service;
 
     /**
-     * Create a new IN_PROGRESS workout.
-     * TEMP: userId is provided as a request param until JWT is wired in.
-     * Later, we’ll pull the user from the auth principal instead of the query param.
+     * Create a new IN_PROGRESS workout. TEMP: userId is provided as a request
+     * param until JWT is wired in.
      */
     @PostMapping
     public WorkoutResponseWebVo create(@RequestParam("userId") UUID userId,
-                                       @RequestBody CreateWorkoutRequestWebVo webVo) {
+            @RequestBody CreateWorkoutRequestWebVo webVo) {
         CreateWorkoutRequestDTO dto = WorkoutConv.toCreateWorkoutDTO(userId, webVo);
         WorkoutResponseDTO responseDto = service.create(dto);
         return WorkoutConv.toResponseWebVo(responseDto);
     }
 
     /**
-    * Add an exercise to a workout. Supports either a catalogId (preset) or custom name.
-    * The workoutId comes from the path; other fields come from the WebVo body.
-    */
+     * Add an exercise to a workout.
+     */
     @PostMapping("/{workoutId}/exercises")
     public WorkoutResponseWebVo addExercise(@PathVariable("workoutId") UUID workoutId,
-                                            @RequestBody AddExerciseRequestWebVo webVo) {
+            @RequestBody AddExerciseRequestWebVo webVo) {
         AddExerciseRequestDTO dto = WorkoutConv.toAddExerciseDTO(workoutId, webVo);
         WorkoutResponseDTO responseDto = service.addExercise(dto);
+        return WorkoutConv.toResponseWebVo(responseDto);
+    }
+
+    /**
+     * Get all workouts for a user. TEMP: userId is provided as a request param
+     * until JWT is wired in.
+     */
+    @GetMapping
+    public List<WorkoutResponseWebVo> getWorkouts(@RequestParam("userId") UUID userId) {
+        GetWorkoutsRequestDTO dto = new GetWorkoutsRequestDTO(userId);
+        List<WorkoutResponseDTO> responseDto = service.getWorkouts(dto);
+
+        // Convert the list inside WorkoutsResponseDTO into WebVos
+        return responseDto.stream()
+                .map(WorkoutConv::toResponseWebVo)
+                .toList();
+    }
+
+    /**
+     * Get a single workout by its ID.
+     */
+    @GetMapping("/{workoutId}")
+    public WorkoutResponseWebVo getWorkout(@PathVariable("workoutId") UUID workoutId) {
+        GetWorkoutRequestDTO dto = new GetWorkoutRequestDTO(workoutId);
+        WorkoutResponseDTO responseDto = service.getWorkout(dto);
         return WorkoutConv.toResponseWebVo(responseDto);
     }
 }

@@ -26,4 +26,7 @@ public interface IWorkoutDao {
     List<WorkoutExerciseEntity> getExercises(UUID workoutId);
 
     void removeExercise(UUID exerciseId);
+
+    // --- New method: get all workouts for a user ---
+    List<WorkoutEntity> findWorkoutsByUserId(UUID userId);
 }

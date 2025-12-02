@@ -1,20 +1,26 @@
 package com.jtucke3.workoutapi.converter.workout.workout;
 
+import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 import com.jtucke3.workoutapi.converter.workout.exercise.ExerciseConv;
 import com.jtucke3.workoutapi.dto.workout.workout.AddExerciseRequestDTO;
 import com.jtucke3.workoutapi.dto.workout.workout.CreateWorkoutRequestDTO;
+import com.jtucke3.workoutapi.dto.workout.workout.GetWorkoutRequestDTO;
+import com.jtucke3.workoutapi.dto.workout.workout.GetWorkoutsRequestDTO;
 import com.jtucke3.workoutapi.dto.workout.workout.WorkoutResponseDTO;
 import com.jtucke3.workoutapi.webVo.workout.workout.AddExerciseRequestWebVo;
 import com.jtucke3.workoutapi.webVo.workout.workout.CreateWorkoutRequestWebVo;
+import com.jtucke3.workoutapi.webVo.workout.workout.GetWorkoutRequestWebVo;
+import com.jtucke3.workoutapi.webVo.workout.workout.GetWorkoutsRequestWebVo;
 import com.jtucke3.workoutapi.webVo.workout.workout.WorkoutResponseWebVo;
-
 /**
  * Converter between WebVo and DTO for workout operations.
  */
 public class WorkoutConv {
+
+    // --- WebVo → DTO ---
 
     public static CreateWorkoutRequestDTO toCreateWorkoutDTO(UUID userId, CreateWorkoutRequestWebVo webVo) {
         if (webVo == null) throw new IllegalArgumentException("Missing request body");
@@ -33,6 +39,18 @@ public class WorkoutConv {
                 webVo.getBodyPart()
         );
     }
+
+    public static GetWorkoutRequestDTO toGetWorkoutDTO(GetWorkoutRequestWebVo webVo) {
+        if (webVo == null) throw new IllegalArgumentException("Missing request body");
+        return new GetWorkoutRequestDTO(webVo.getWorkoutId());
+    }
+
+    public static GetWorkoutsRequestDTO toGetWorkoutsDTO(GetWorkoutsRequestWebVo webVo) {
+        if (webVo == null) throw new IllegalArgumentException("Missing request body");
+        return new GetWorkoutsRequestDTO(webVo.getUserId());
+    }
+
+    // --- DTO → WebVo ---
 
     public static WorkoutResponseWebVo toResponseWebVo(WorkoutResponseDTO dto) {
         if (dto == null) return null;
@@ -53,5 +71,12 @@ public class WorkoutConv {
         }
 
         return webVo;
+    }
+
+    public static List<WorkoutResponseWebVo> toResponseWebVoList(List<WorkoutResponseDTO> dtos) {
+        if (dtos == null) return List.of();
+        return dtos.stream()
+                   .map(WorkoutConv::toResponseWebVo)
+                   .collect(Collectors.toList());
     }
 }
